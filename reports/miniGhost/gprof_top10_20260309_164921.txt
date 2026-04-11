@@ -1,0 +1,10 @@
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 57.89      0.11     0.11      100     1.10     1.10  __mg_stencil_comps_mod_MOD_mg_stencil_2d5pt
+ 21.05      0.15     0.04        1    40.00    50.00  __mg_utils_mod_MOD_mg_grid_init
+  5.26      0.16     0.01  5000002     0.00     0.00  __mg_utils_mod_MOD_mg_random_seed
+  5.26      0.17     0.01      105     0.10     0.10  __mg_sum_grid_mod_MOD_mg_sum_grid
+  5.26      0.18     0.01      100     0.10     0.10  __mg_flux_accumulate_mod_MOD_mg_flux_accumulate_2d5pt_3d7pt
+  5.26      0.19     0.01                             _init
+  0.00      0.19     0.00     1067     0.00     0.00  __mg_utils_mod_MOD_mg_timer
+  0.00      0.19     0.00      263     0.00     0.00  __mg_utils_mod_MOD_mg_assert
+  0.00      0.19     0.00      100     0.00     0.10  __mg_boundary_conditions_mod_MOD_mg_boundary_conditions

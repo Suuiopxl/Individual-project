@@ -1,0 +1,23 @@
+{
+  "application": "miniGhost",
+  "timestamp": "20260309_165602",
+  "config": {
+    "mpi_ranks": 2,
+    "problem_args": "--nx 100 --ny 100 --nz 100 --num_tsteps 20 --num_vars 5",
+    "baseline_runs": 3
+  },
+  "gprof_hotspots": [
+    {"pct_time": "time", "cumulative_sec": "seconds", "self_sec": "seconds", "calls": "calls", "function": "name"},
+    {"pct_time": "43.75", "cumulative_sec": "0.07", "self_sec": "0.07", "calls": "100", "function": "__mg_stencil_comps_mod_MOD_mg_stencil_2d5pt"},
+    {"pct_time": "25.00", "cumulative_sec": "0.11", "self_sec": "0.04", "calls": "105", "function": "__mg_sum_grid_mod_MOD_mg_sum_grid"},
+    {"pct_time": "18.75", "cumulative_sec": "0.14", "self_sec": "0.03", "calls": "1", "function": "__mg_utils_mod_MOD_mg_grid_init"},
+    {"pct_time": "12.50", "cumulative_sec": "0.16", "self_sec": "0.02", "calls": "100", "function": "__mg_flux_accumulate_mod_MOD_mg_flux_accumulate_2d5pt_3d7pt"},
+    {"pct_time": "0.00", "cumulative_sec": "0.16", "self_sec": "0.00", "calls": "5000002", "function": "__mg_utils_mod_MOD_mg_random_seed"},
+    {"pct_time": "0.00", "cumulative_sec": "0.16", "self_sec": "0.00", "calls": "1067", "function": "__mg_utils_mod_MOD_mg_timer"},
+    {"pct_time": "0.00", "cumulative_sec": "0.16", "self_sec": "0.00", "calls": "263", "function": "__mg_utils_mod_MOD_mg_assert"},
+    {"pct_time": "0.00", "cumulative_sec": "0.16", "self_sec": "0.00", "calls": "100", "function": "__mg_boundary_conditions_mod_MOD_mg_boundary_conditions"},
+    {"pct_time": "0.00", "cumulative_sec": "0.16", "self_sec": "0.00", "calls": "100", "function": "__mg_pack_mod_MOD_mg_pack"}
+  ],
+  "source_dir": "/home/suuiopxl/Individual-project/apps/miniGhost/ref",
+  "next_step": "运行 02_analyze_hotspots.py miniGhost 将热点函数喂给 LLM"
+}

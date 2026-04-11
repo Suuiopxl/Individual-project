@@ -1,0 +1,12 @@
+==============================
+miniGhost Baseline Summary
+==============================
+Date:       Fri Mar 27 12:23:52 GMT 2026
+MPI ranks:  2
+Runs:       3
+Args:       --nx 100 --ny 100 --nz 100 --num_tsteps 20 --num_vars 5
+Wall-clock times (ms): 1621 1569 1586
+Average:  1592 ms
+Min:      1569 ms
+Max:      1621 ms
+==============================

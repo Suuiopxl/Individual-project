@@ -1,0 +1,24 @@
+{
+  "application": "miniGhost",
+  "language": "fortran",
+  "timestamp": "20260411_162626",
+  "config": {
+    "mpi_ranks": 2,
+    "problem_args": "--nx 100 --ny 100 --nz 100 --num_tsteps 20 --num_vars 5",
+    "baseline_runs": 3,
+    "build_system": "make"
+  },
+  "gprof_hotspots": [
+    {"pct_time": "time", "cumulative_sec": "seconds", "self_sec": "seconds", "calls": "calls", "function": "name"},
+    {"pct_time": "44.44", "cumulative_sec": "0.08", "self_sec": "0.08", "calls": "100", "function": "__mg_stencil_comps_mod_MOD_mg_stencil_2d5pt"},
+    {"pct_time": "27.78", "cumulative_sec": "0.13", "self_sec": "0.05", "calls": "1", "function": "__mg_utils_mod_MOD_mg_grid_init"},
+    {"pct_time": "16.67", "cumulative_sec": "0.16", "self_sec": "0.03", "calls": "105", "function": "__mg_sum_grid_mod_MOD_mg_sum_grid"},
+    {"pct_time": "5.56", "cumulative_sec": "0.17", "self_sec": "0.01", "calls": "5000002", "function": "__mg_utils_mod_MOD_mg_random_seed"},
+    {"pct_time": "0.00", "cumulative_sec": "0.18", "self_sec": "0.00", "calls": "1067", "function": "__mg_utils_mod_MOD_mg_timer"},
+    {"pct_time": "0.00", "cumulative_sec": "0.18", "self_sec": "0.00", "calls": "263", "function": "__mg_utils_mod_MOD_mg_assert"},
+    {"pct_time": "0.00", "cumulative_sec": "0.18", "self_sec": "0.00", "calls": "100", "function": "__mg_boundary_conditions_mod_MOD_mg_boundary_conditions"},
+    {"pct_time": "0.00", "cumulative_sec": "0.18", "self_sec": "0.00", "calls": "100", "function": "__mg_flux_accumulate_mod_MOD_mg_flux_accumulate_2d5pt_3d7pt"}
+  ],
+  "source_dir": "/home/suuiopxl/Individual-project/apps/miniGhost/ref",
+  "next_step": "Run 02_analyze_hotspots.py miniGhost to feed hotspot functions to LLM"
+}
