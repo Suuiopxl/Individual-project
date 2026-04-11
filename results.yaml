@@ -1,0 +1,60 @@
+ code: miniGhost
+ version:1.0.0
+ compiled_on: Sat Apr 11 17:29:05 BST 2026
+ directory: /home/suuiopxl/Individual-project/apps/miniGhost_gpu/ref
+ FORTRAN_compiler: /opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/mpi/bin/mpifort
+ C_compiler: /opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/mpi/bin/mpicc
+ linker: /opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/mpi/bin/mpicc
+ FORTRAN_flags: -O2 -acc -gpu=mem:managed -Minfo=accel -Mfreeform -D_MG_MPI -D_MG_INT4 -D_MG_REAL8 -I/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/lib
+ C_flags: -O2 -D_MG_MPI -D_MG_INT4 -D_MG_REAL8
+ arch: 
+ hostname: Alice
+ module_list./capture_env: line45:module:commandnotfound
+ Comm_strategy: full message aggregation (COMM_METHOD_BSPMA)
+ Computation: 5-point difference stencil on a 2D grid (STENCIL_2D5PT)
+    Dirichlet boundary conditions
+ Global_Grid_X:      200
+ Global_Grid_Y:      200
+ Global_Grid_Z:      200
+ Local_Grid_X:      200
+ Local_Grid_Y:      200
+ Local_Grid_Z:      200
+ Number_variables:  5
+ Number_reduced:  5
+ Percent_reduced: 100
+ Time_steps:     20
+ Task_grid_X:     1
+ Task_grid_Y:     1
+ Task_grid_Z:     1
+ Scaling: weak
+ processes:        1
+ machine: Insert machine name here      
+ Program_execution_at: 181900.964
+ Program_execution_date: 20260411
+ Total_time:  4.788275E+00
+ clock_resolution:  1.000000E-09
+ Error_tolerance:  1.000000E-08
+ Comp_time_ave:  3.621407E+00
+ Comp_time_min:  3.621407E+00
+ Comp_time_max:  3.621407E+00
+ BC_time_ave:  4.280132E-02
+ BC_time_min:  4.280132E-02
+ BC_time_max:  4.280132E-02
+ GFLOPS_Total:                 8.354E-01
+ GFLOPS_per_process:           8.354E-01
+ GFLOPS_stencil_Total:         8.354E-01
+ GFLOPS_stencil_per_process:   8.354E-01
+ FLOPS_Total:                  4.000E+09
+ FLOPS_Sums:                   3.200E+09
+ FLOPS_Divide:                 8.000E+08
+ Number_spikes:             1
+ Number_gridsum:                       105
+     Gridsum_Time_ave:         1.400E+00
+     Gridsum_Time_comp_ave:    1.222E+00
+     Gridsum_Time_comm_ave:    2.749E-03
+     Gridsum_Time_max:         1.400E+00
+     Gridsum_Time_comp_max:    1.222E+00
+     Gridsum_Time_comm_max:    2.749E-03
+     Gridsum_Time_min:         1.400E+00
+     Gridsum_Time_comp_min:    1.222E+00
+     Gridsum_Time_comm_min:    2.749E-03
