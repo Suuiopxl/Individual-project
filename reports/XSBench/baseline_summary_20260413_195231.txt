@@ -1,0 +1,13 @@
+==============================
+XSBench Baseline Summary
+==============================
+Date:       Mon Apr 13 19:52:42 BST 2026
+Language:   c
+MPI:        false (ranks: 1)
+Runs:       3
+Args:       -t 4 -s small
+Wall-clock times (ms): 3120 3062 3118
+Average:  3100 ms
+Min:      3062 ms
+Max:      3120 ms
+==============================

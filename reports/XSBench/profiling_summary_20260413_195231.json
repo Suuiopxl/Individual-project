@@ -1,0 +1,19 @@
+{
+  "application": "XSBench",
+  "language": "c",
+  "timestamp": "20260413_195231",
+  "config": {
+    "mpi_ranks": 1,
+    "problem_args": "-t 4 -s small",
+    "baseline_runs": 3,
+    "build_system": "make"
+  },
+  "gprof_hotspots": [
+    {"pct_time": "time", "cumulative_sec": "seconds", "self_sec": "seconds", "calls": "calls", "function": "name"},
+    {"pct_time": "92.31", "cumulative_sec": "7.32", "self_sec": "7.32", "calls": "13107474", "function": "calculate_macro_xs"},
+    {"pct_time": "0.00", "cumulative_sec": "7.93", "self_sec": "0.00", "calls": "8", "function": "fancy_int"},
+    {"pct_time": "0.00", "cumulative_sec": "7.93", "self_sec": "0.00", "calls": "7", "function": "load_mats"}
+  ],
+  "source_dir": "/home/suuiopxl/Individual-project/apps/XSBench/openmp-threading",
+  "next_step": "Run 02_analyze_hotspots.py XSBench to feed hotspot functions to LLM"
+}
