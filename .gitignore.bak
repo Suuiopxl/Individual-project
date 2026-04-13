@@ -1,24 +1,52 @@
-# API keys
+# ==================== API keys ====================
 .env
 API.txt
 
-# Build artifacts
+# ==================== Build artifacts ====================
 *.o
 *.mod
 *.x
 *_build/
 
-# Profiling data
+# ==================== Profiling data ====================
 gmon.out
 perf.data*
 
-# Large files
+# ==================== Large / binary files ====================
 *.log
+*.so
+*.a
+*.dylib
 
-# OS
+# ==================== OS files ====================
 .DS_Store
 Thumbs.db
 
-# Python
+# ==================== Python ====================
 __pycache__/
 *.pyc
+*.pyo
+
+# ==================== App-specific ignores ====================
+# Ignore large build dirs inside cloned app sources
+apps/*/build/
+apps/*/.git/
+apps/*/CMakeFiles/
+apps/*/CMakeCache.txt
+apps/*_gpu/original_backup/
+
+# LAMMPS specific (very large repo)
+apps/LAMMPS/doc/
+apps/LAMMPS/examples/
+apps/LAMMPS/bench/
+apps/LAMMPS/potentials/
+apps/LAMMPS/tools/
+apps/LAMMPS/cmake/
+apps/LAMMPS/unittest/
+apps/LAMMPS_gpu/doc/
+apps/LAMMPS_gpu/examples/
+apps/LAMMPS_gpu/bench/
+apps/LAMMPS_gpu/potentials/
+apps/LAMMPS_gpu/tools/
+apps/LAMMPS_gpu/cmake/
+apps/LAMMPS_gpu/unittest/

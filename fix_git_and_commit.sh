@@ -193,7 +193,7 @@ read -p "Proceed with staging and committing? [y/N] " confirm
 if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
     info "Aborted. You can review and commit manually:"
     info "  git add -A && git status"
-    info "  git commit -m 'miniGhost: improve comparison script'"
+    info "  git commit -m 'your message'"
     exit 0
 fi
 
@@ -203,7 +203,7 @@ echo "--- Staged changes summary ---"
 git diff --cached --stat | tail -5
 
 # Commit
-COMMIT_MSG="chore: fix git tracking for apps/ + save progress
+COMMIT_MSG="miniGhost: fix git tracking for apps/ + improve patch script
 
 - Remove nested .git dirs in cloned app sources (was preventing tracking)
 - Update .gitignore: allow app source code, exclude build artifacts
