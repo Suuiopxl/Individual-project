@@ -1,0 +1,42 @@
+========================================================
+  XSBench CPU vs CUDA GPU Performance Comparison
+  Date: Mon Apr 13 21:59:51 BST 2026
+  CPU: 13th Gen Intel(R) Core(TM) i9-13900HK
+  GPU: NVIDIA GeForce RTX 4080 Laptop GPU
+  Problem size: small | Runs per config: 3
+========================================================
+
+--- Lookups: 100000 ---
+Config                 Runtime(s)        Lookups/s    Kernel(s)     Checksum    Speedup
+-------------------- ------------ ---------------- ------------ ------------ ----------
+CPU 1-thread                 .068          1456139          N/A       299541        1.0x
+CPU 4-thread                 .019          5254600          N/A       299541        3.6x
+GPU (total)                  .418           254176         .001       299541         .1x
+GPU (kernel only)            .001        100000000         .001            -       68.6x
+
+--- Lookups: 1000000 ---
+Config                 Runtime(s)        Lookups/s    Kernel(s)     Checksum    Speedup
+-------------------- ------------ ---------------- ------------ ------------ ----------
+CPU 1-thread                 .672          1486324          N/A       999388        1.0x
+CPU 4-thread                 .175          5724220          N/A       999388        3.8x
+GPU (total)                  .281          4730414         .003      2999354        3.1x
+GPU (kernel only)            .003        333333333         .003            -      224.2x
+
+--- Lookups: 17000000 ---
+Config                 Runtime(s)        Lookups/s    Kernel(s)     Checksum    Speedup
+-------------------- ------------ ---------------- ------------ ------------ ----------
+CPU 1-thread               11.726          1449885          N/A       945990        1.0x
+CPU 4-thread                3.200          5340150          N/A       945990        3.6x
+GPU (total)                  .528         33709929         .056     50945140       23.2x
+GPU (kernel only)            .056        303571428         .056            -      209.3x
+
+========================================================
+  ANALYSIS NOTES
+========================================================
+- "GPU (total)" includes cudaMalloc + cudaMemcpy + kernel + cudaMemcpy back
+- "GPU (kernel only)" is pure computation time on GPU
+- Speedup is relative to CPU 1-thread baseline
+- Large gap between GPU total and kernel-only indicates data transfer bottleneck
+- In production, data stays on GPU across iterations => effective speedup
+  approaches the kernel-only number
+========================================================
