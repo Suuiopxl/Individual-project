@@ -50,3 +50,7 @@ apps/LAMMPS_gpu/potentials/
 apps/LAMMPS_gpu/tools/
 apps/LAMMPS_gpu/cmake/
 apps/LAMMPS_gpu/unittest/
+
+# LAMMPS is too large for GitHub (~1GB), keep local only
+apps/LAMMPS/
+apps/LAMMPS_gpu/

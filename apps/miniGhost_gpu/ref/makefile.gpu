@@ -1,0 +1,10 @@
+# makefile.gpu — miniGhost GPU build (auto-generated)
+FC       = /opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/mpi/bin/mpifort
+CC       = /opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/mpi/bin/mpicc
+LD       = /opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/mpi/bin/mpicc
+
+FFLAGS   = -O2 -acc -gpu=mem:managed -Minfo=accel -Mfreeform -D_MG_MPI -D_MG_INT4 -D_MG_REAL8 -I/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/lib
+CFLAGS   = -O2 -D_MG_MPI -D_MG_INT4 -D_MG_REAL8
+LDFLAGS  = -acc -gpu=mem:managed -fortranlibs -I/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/lib -Wl,-rpath -Wl,/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/lib -Wl,--enable-new-dtags -lmpi_usempif08 -lmpi_usempi_ignore_tkr -lmpi_mpifh -lmpi
+
+include make_targets
