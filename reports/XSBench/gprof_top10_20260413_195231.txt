@@ -1,0 +1,8 @@
+ time   seconds   seconds    calls  ns/call  ns/call  name    
+ 92.31      7.32     7.32 13107474   558.46   558.46  calculate_macro_xs
+  6.56      7.84     0.52                             print_CLI_error
+  0.88      7.91     0.07                             main
+  0.13      7.92     0.01                             NGP_compare
+  0.13      7.93     0.01                             double_compare
+  0.00      7.93     0.00        8     0.00     0.00  fancy_int
+  0.00      7.93     0.00        7     0.00     0.00  load_mats
