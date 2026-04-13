@@ -1,0 +1,32 @@
+# makefile.openacc — miniGhost with OpenACC (NVIDIA HPC SDK)
+FC       = nvfortran
+CC       = nvc
+LD       = nvfortran
+
+ACC_FLAGS = -acc -gpu=managed -Minfo=accel
+OPT_FLAGS = -O2
+FFLAGS   = $(OPT_FLAGS) $(ACC_FLAGS)
+CFLAGS   = $(OPT_FLAGS) $(ACC_FLAGS)
+LDFLAGS  = $(ACC_FLAGS)
+
+MPI_LOC     =
+MPI_INCLUDE =
+MPI_LIB     =
+
+OBJS = \
+    MG_CONSTANTS.o MG_OPTIONS.o MG_UTILS.o MG_PROFILING.o \
+    MG_SUM_GRID.o MG_STENCIL_COMPS.o MG_FLUX_ACCUMULATE.o \
+    MG_BOUNDARY_CONDITIONS.o MG_PACK.o MG_IRECV.o MG_SEND.o \
+    MG_ALLREDUCE.o DRIVER_BSPMA.o DRIVER_SVAF.o MAIN.o
+
+TARGET = miniGhost_gpu.x
+
+.SUFFIXES: .F .o
+.F.o:
+	$(FC) $(FFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(MPI_LIB)
+
+clean:
+	rm -f *.o *.mod $(TARGET)
