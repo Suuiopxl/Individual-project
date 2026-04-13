@@ -1,0 +1,18 @@
+========================================================
+  miniGhost CPU vs GPU Performance Comparison
+  Date: Sat Apr 11 18:57:05 BST 2026
+  CPU binary: /home/suuiopxl/Individual-project/apps/miniGhost_build/miniGhost_normal.x
+  GPU binary: /home/suuiopxl/Individual-project/apps/miniGhost_gpu/ref/miniGhost.x
+  GPU: NVIDIA GeForce RTX 4080 Laptop GPU
+  Runs per size: 3
+  Time steps: 20 | Variables: 5
+========================================================
+
+Size      CPU (ms)      GPU (ms)      Speedup   
+--------  ------------  ------------  ----------
+50^3      437           2158          0.20x     
+100^3     1543          4689          0.33x     
+150^3     4579          8166          0.56x     
+200^3     11805         15319         0.77x     
+
+========================================================

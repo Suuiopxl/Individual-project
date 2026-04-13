@@ -1,0 +1,26 @@
+========================================================
+  miniGhost CPU vs GPU Performance Comparison
+  Date: Mon Apr 13 18:58:04 BST 2026
+  CPU: /home/suuiopxl/Individual-project/apps/miniGhost_build/miniGhost_normal.x
+  GPU: /home/suuiopxl/Individual-project/apps/miniGhost_gpu/ref/miniGhost.x
+  GPU device: NVIDIA GeForce RTX 4080 Laptop GPU
+  Runs: 3
+  Args: --nx 100 --ny 100 --nz 100 --num_tsteps 20 --num_vars 5
+========================================================
+
+
+[1;32m[18:58:04] CPU Baseline (3 runs)[0m
+  Run 1: 1579ms
+  Run 2: 1572ms
+  Run 3: 1558ms
+  Average: 1569ms
+
+[1;32m[18:58:09] GPU Version (3 runs)[0m
+  Run 1: 4019ms
+  Run 2: 3709ms
+  Run 3: 3765ms
+  Average: 3831ms
+
+========================================================
+  CPU avg: 1569ms  |  GPU avg: 3831ms  |  Speedup: 0.41x
+========================================================

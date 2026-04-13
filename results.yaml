@@ -29,32 +29,32 @@
  Scaling: weak
  processes:        1
  machine: Insert machine name here      
- Program_execution_at: 181900.964
- Program_execution_date: 20260411
- Total_time:  4.788275E+00
+ Program_execution_at: 184821.684
+ Program_execution_date: 20260413
+ Total_time:  6.686506E+00
  clock_resolution:  1.000000E-09
  Error_tolerance:  1.000000E-08
- Comp_time_ave:  3.621407E+00
- Comp_time_min:  3.621407E+00
- Comp_time_max:  3.621407E+00
- BC_time_ave:  4.280132E-02
- BC_time_min:  4.280132E-02
- BC_time_max:  4.280132E-02
- GFLOPS_Total:                 8.354E-01
- GFLOPS_per_process:           8.354E-01
- GFLOPS_stencil_Total:         8.354E-01
- GFLOPS_stencil_per_process:   8.354E-01
+ Comp_time_ave:  5.212339E+00
+ Comp_time_min:  5.212339E+00
+ Comp_time_max:  5.212339E+00
+ BC_time_ave:  4.630787E-02
+ BC_time_min:  4.630787E-02
+ BC_time_max:  4.630787E-02
+ GFLOPS_Total:                 5.982E-01
+ GFLOPS_per_process:           5.982E-01
+ GFLOPS_stencil_Total:         5.982E-01
+ GFLOPS_stencil_per_process:   5.982E-01
  FLOPS_Total:                  4.000E+09
  FLOPS_Sums:                   3.200E+09
  FLOPS_Divide:                 8.000E+08
  Number_spikes:             1
  Number_gridsum:                       105
-     Gridsum_Time_ave:         1.400E+00
-     Gridsum_Time_comp_ave:    1.222E+00
-     Gridsum_Time_comm_ave:    2.749E-03
-     Gridsum_Time_max:         1.400E+00
-     Gridsum_Time_comp_max:    1.222E+00
-     Gridsum_Time_comm_max:    2.749E-03
-     Gridsum_Time_min:         1.400E+00
-     Gridsum_Time_comp_min:    1.222E+00
-     Gridsum_Time_comm_min:    2.749E-03
+     Gridsum_Time_ave:         1.732E+00
+     Gridsum_Time_comp_ave:    1.535E+00
+     Gridsum_Time_comm_ave:    3.332E-03
+     Gridsum_Time_max:         1.732E+00
+     Gridsum_Time_comp_max:    1.535E+00
+     Gridsum_Time_comm_max:    3.332E-03
+     Gridsum_Time_min:         1.732E+00
+     Gridsum_Time_comp_min:    1.535E+00
+     Gridsum_Time_comm_min:    3.332E-03
