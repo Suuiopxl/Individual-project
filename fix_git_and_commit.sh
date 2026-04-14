@@ -203,7 +203,7 @@ echo "--- Staged changes summary ---"
 git diff --cached --stat | tail -5
 
 # Commit
-COMMIT_MSG="miniGhost: fix git tracking for apps/ + improve patch script
+COMMIT_MSG="XSBench: setup profiling
 
 - Remove nested .git dirs in cloned app sources (was preventing tracking)
 - Update .gitignore: allow app source code, exclude build artifacts

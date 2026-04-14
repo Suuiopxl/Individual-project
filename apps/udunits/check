@@ -1,3 +1,0 @@
-# This script checks this package by building it and running tests
-
-exec make -f dev-makefile check

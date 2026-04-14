@@ -1,6 +1,0 @@
-hostchecks
-*.log
-redo-results
-*.results
-results.tab
-Makefile
