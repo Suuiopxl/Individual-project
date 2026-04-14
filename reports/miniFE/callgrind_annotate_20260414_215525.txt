@@ -1,0 +1,48 @@
+--------------------------------------------------------------------------------
+Profile data file '/home/suuiopxl/Individual-project/reports/miniFE/callgrind_20260414_215525.out' (creator: callgrind-3.22.0)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 6060633913
+Trigger: Program termination
+Profiled target:  ./miniFE_normal.x -nx 80 -ny 80 -nz 80 (PID 17730, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       99
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+Ir                      
+--------------------------------------------------------------------------------
+37,912,229,127 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                       file:function
+--------------------------------------------------------------------------------
+20,762,714,487 (54.77%)  ???:miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >::operator()(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int>&, miniFE::Vector<double, int, int>&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+ 3,431,790,654 ( 9.05%)  ???:void miniFE::impose_dirichlet<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >(miniFE::CSRMatrix<double, int, int>::ScalarType, miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int>&, int, int, int, std::set<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::less<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType>, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+ 3,003,542,134 ( 7.92%)  ???:void miniFE::sum_in_symm_elem_matrix<miniFE::CSRMatrix<double, int, int> >(unsigned long, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType const*, miniFE::CSRMatrix<double, int, int>::ScalarType const*, miniFE::CSRMatrix<double, int, int>&) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+ 2,889,728,000 ( 7.62%)  ???:void miniFE::Hex8::diffusionMatrix_symm<double>(double const*, double const*, double*) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+ 1,404,928,000 ( 3.71%)  ???:void miniFE::Hex8::gradients_and_invJ_and_detJ<double>(double const*, double const*, double*, double&) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+ 1,183,744,000 ( 3.12%)  ???:void miniFE::Hex8::gradients_and_detJ<double>(double const*, double const*, double&) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   850,325,600 ( 2.24%)  ???:void miniFE::daxpby<miniFE::Vector<double, int, int> >(double, miniFE::Vector<double, int, int> const&, double, miniFE::Vector<double, int, int>&) [clone ._omp_fn.1] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   746,572,964 ( 1.97%)  ???:int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   507,006,480 ( 1.34%)  ???:miniFE::TypeTraits<miniFE::Vector<double, int, int>::ScalarType>::magnitude_type miniFE::dot<miniFE::Vector<double, int, int> >(miniFE::Vector<double, int, int> const&, miniFE::Vector<double, int, int> const&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   443,904,000 ( 1.17%)  ???:void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   425,162,600 ( 1.12%)  ???:miniFE::TypeTraits<miniFE::Vector<double, int, int>::ScalarType>::magnitude_type miniFE::dot_r2<miniFE::Vector<double, int, int> >(miniFE::Vector<double, int, int> const&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   423,036,986 ( 1.12%)  ???:void miniFE::daxpby<miniFE::Vector<double, int, int> >(double, miniFE::Vector<double, int, int> const&, double, miniFE::Vector<double, int, int>&) [clone ._omp_fn.2] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   404,532,220 ( 1.07%)  ./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S:__memset_avx2_unaligned_erms [/usr/lib/x86_64-linux-gnu/libc.so.6]
+   370,270,493 ( 0.98%)  ???:void miniFE::init_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, std::vector<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&, std::vector<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType> > const&, std::vector<int, std::allocator<int> > const&, int, int, int, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   310,466,288 ( 0.82%)  ???:int miniFE::generate_matrix_structure<miniFE::CSRMatrix<double, int, int> >(miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&, miniFE::CSRMatrix<double, int, int>&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   211,968,049 ( 0.56%)  ???:void miniFE::perform_element_loop<int, miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >(miniFE::simple_mesh_description<int> const&, Box const&, miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int>&, miniFE::Parameters&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]
+   186,643,150 ( 0.49%)  ???:std::_Rb_tree_decrement(std::_Rb_tree_node_base const*) [/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33]
+
+--------------------------------------------------------------------------------
+The following files chosen for auto-annotation could not be found:
+--------------------------------------------------------------------------------
+  ./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S
+

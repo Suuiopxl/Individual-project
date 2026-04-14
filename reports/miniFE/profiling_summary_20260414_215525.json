@@ -1,0 +1,108 @@
+{
+  "application": "miniFE",
+  "language": "cpp",
+  "timestamp": "20260414_215525",
+  "profiler": "callgrind",
+  "config": {
+    "mpi_ranks": 1,
+    "omp_threads": 1,
+    "problem_args": "-nx 128 -ny 128 -nz 128",
+    "baseline_runs": 3,
+    "build_system": "make"
+  },
+  "gprof_hotspots": [
+    {
+      "pct_time": "54.77",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "20762714487",
+      "function": "Vector<double, int, int>&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "9.05",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "3431790654",
+      "function": "GlobalOrdinalType> > const&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "7.92",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "3003542134",
+      "function": "CSRMatrix<double, int, int>&) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "7.62",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "2889728000",
+      "function": "diffusionMatrix_symm<double>(double const*, double const*, double*) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "3.71",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "1404928000",
+      "function": "gradients_and_invJ_and_detJ<double>(double const*, double const*, double*, double&) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "3.12",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "1183744000",
+      "function": "gradients_and_detJ<double>(double const*, double const*, double&) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "2.24",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "850325600",
+      "function": "Vector<double, int, int>&) [clone ._omp_fn.1] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "1.97",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "746572964",
+      "function": "pair<int const, int> > > const&) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "1.34",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "507006480",
+      "function": "Vector<double, int, int> const&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "1.17",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "443904000",
+      "function": "sourceVector<double>(double const*, double const*, double*) [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "1.12",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "425162600",
+      "function": "Vector<double, int, int> const&) [clone ._omp_fn.0] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "1.12",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "423036986",
+      "function": "Vector<double, int, int>&) [clone ._omp_fn.2] [/home/suuiopxl/Individual-project/apps/miniFE_build/miniFE_normal.x]"
+    },
+    {
+      "pct_time": "1.07",
+      "self_sec": "N/A",
+      "cumulative_sec": "N/A",
+      "calls": "404532220",
+      "function": "__memset_avx2_unaligned_erms [/usr/lib/x86_64-linux-gnu/libc.so.6]"
+    }
+  ],
+  "source_dir": "/home/suuiopxl/Individual-project/apps/miniFE/openmp/src",
+  "next_step": "Run 02_analyze_hotspots.py miniFE to feed hotspot functions to LLM"
+}

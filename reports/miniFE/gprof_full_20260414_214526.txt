@@ -1,0 +1,508 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 59.48      7.53     7.53                             MPI::Comm::Abort(int)
+ 11.85      9.03     1.50      280     0.01     0.01  frame_dummy
+  7.98     10.04     1.01  2097152     0.00     0.00  void miniFE::sum_in_symm_elem_matrix<miniFE::CSRMatrix<double, int, int> >(unsigned long, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType const*, miniFE::CSRMatrix<double, int, int>::ScalarType const*, miniFE::CSRMatrix<double, int, int>&)
+  7.42     10.98     0.94                             MPI::Datatype::Create_contiguous(int) const
+  4.03     11.49     0.51  2097152     0.00     0.00  void miniFE::Hex8::diffusionMatrix_symm<double>(double const*, double const*, double*)
+  2.53     11.81     0.32 16777216     0.00     0.00  void miniFE::Hex8::gradients_and_invJ_and_detJ<double>(double const*, double const*, double*, double&)
+  2.21     12.09     0.28                             void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*)
+  1.82     12.32     0.23 16777216     0.00     0.00  void miniFE::Hex8::gradients_and_detJ<double>(double const*, double const*, double&)
+  1.11     12.46     0.14 73943687     0.00     0.00  int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&)
+  0.55     12.53     0.07        1     0.07     0.21  void miniFE::init_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, std::vector<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&, std::vector<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType> > const&, std::vector<int, std::allocator<int> > const&, int, int, int, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&)
+  0.32     12.57     0.04                             _init
+  0.24     12.60     0.03  2146689     0.00     0.00  void sort_if_needed<int>(int*, int)
+  0.24     12.63     0.03  2097152     0.00     0.00  void miniFE::compute_gradient_values<double>(double*)
+  0.16     12.65     0.02        1     0.02     1.68  int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&)
+  0.08     12.66     0.01        1     0.01     0.01  void miniFE::get_ids<int>(int, int, int, Box const&, std::vector<int, std::allocator<int> >&, bool)
+  0.00     12.66     0.00    66564     0.00     0.00  std::pair<std::_Rb_tree_iterator<int>, bool> std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_insert_unique<int>(int&&)
+  0.00     12.66     0.00    33282     0.00     0.00  std::pair<std::_Rb_tree_iterator<int>, bool> std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_insert_unique<int const&>(int const&)
+  0.00     12.66     0.00     2025     0.00     0.00  miniFE::mytimer()
+  0.00     12.66     0.00      201     0.00     0.00  void miniFE::exchange_externals<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int>&)
+  0.00     12.66     0.00       55     0.00     0.00  YAML_Element::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00     12.66     0.00       35     0.00     0.00  void std::vector<YAML_Element*, std::allocator<YAML_Element*> >::_M_realloc_insert<YAML_Element* const&>(__gnu_cxx::__normal_iterator<YAML_Element**, std::vector<YAML_Element*, std::allocator<YAML_Element*> > >, YAML_Element* const&)
+  0.00     12.66     0.00       24     0.00     0.00  YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double)
+  0.00     12.66     0.00       23     0.00     0.00  YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00     12.66     0.00       13     0.00     0.00  int Mantevo::parse_parameter<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int const&)
+  0.00     12.66     0.00       12     0.00     0.00  YAML_Element::printYAML(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+  0.00     12.66     0.00        6     0.00     0.00  YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)
+  0.00     12.66     0.00        6     0.00     0.00  YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long)
+  0.00     12.66     0.00        5     0.00     0.00  std::vector<int, std::allocator<int> >::_M_default_append(unsigned long)
+  0.00     12.66     0.00        2     0.00     0.00  add_timestring_to_yaml(YAML_Doc&)
+  0.00     12.66     0.00        2     0.00     0.00  YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, long long)
+  0.00     12.66     0.00        2     0.00     0.00  void miniFE::get_global_min_max<int>(int, int&, int&, int&, int&, int&)
+  0.00     12.66     0.00        2     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > Mantevo::parse_parameter<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00     12.66     0.00        2     0.00     0.00  MPI::Intracomm::Split(int, int) const
+  0.00     12.66     0.00        2     0.00     0.00  std::vector<int, std::allocator<int> >::reserve(unsigned long)
+  0.00     12.66     0.00        1     0.00     0.00  box_partition(int, int, int, Box const&, Box*)
+  0.00     12.66     0.00        1     0.00     0.00  add_params_to_yaml(YAML_Doc&, miniFE::Parameters&)
+  0.00     12.66     0.00        1     0.00     0.00  add_configuration_to_yaml(YAML_Doc&, int, int)
+  0.00     12.66     0.00        1     0.00     0.00  YAML_Element::~YAML_Element()
+  0.00     12.66     0.00        1     0.00     0.00  miniFE::finalize_mpi()
+  0.00     12.66     0.00        1     0.00     0.00  miniFE::get_parameters(int, char**, miniFE::Parameters&)
+  0.00     12.66     0.00        1     0.00     0.00  miniFE::initialize_mpi(int, char**, int&, int&)
+  0.00     12.66     0.00        1     0.00     0.00  void miniFE::make_local_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&)
+  0.00     12.66     0.00        1     0.00     0.00  void miniFE::get_global_min_max<double>(double, double&, double&, int&, double&, int&)
+  0.00     12.66     0.00        1     0.00     0.00  miniFE::broadcast_parameters(miniFE::Parameters&)
+  0.00     12.66     0.00        1     0.00     0.10  unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&)
+  0.00     12.66     0.00        1     0.00     0.01  void miniFE::create_map_id_to_row<int>(int, int, int, Box const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >&)
+  0.00     12.66     0.00        1     0.00     0.01  miniFE::simple_mesh_description<int>::simple_mesh_description(Box const&, Box const&)
+  0.00     12.66     0.00        1     0.00     0.00  float miniFE::compute_std_dev_as_percentage<float>(float, float)
+  0.00     12.66     0.00        1     0.00     1.07  void miniFE::cg_solve<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int>, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> > >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int> const&, miniFE::Vector<double, int, int>&, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType&, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, double*)
+  0.00     12.66     0.00        1     0.00     0.00  float Mantevo::parse_parameter<float>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, float const&)
+  0.00     12.66     0.00        1     0.00     0.00  Mantevo::read_args_into_string(int, char**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&)
+  0.00     12.66     0.00        1     0.00     0.00  YAML_Doc::generateYAML[abi:cxx11]()
+  0.00     12.66     0.00        1     0.00     0.00  YAML_Doc::YAML_Doc(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00     12.66     0.00        1     0.00     0.00  YAML_Doc::~YAML_Doc()
+  0.00     12.66     0.00        1     0.00     0.00  std::vector<Box, std::allocator<Box> >::~vector()
+  0.00     12.66     0.00        1     0.00     0.00  std::vector<double, std::allocator<double> >::_M_default_append(unsigned long)
+  0.00     12.66     0.00        1     0.00     0.00  std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::pair<int, int> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::pair<int, int>&&)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.08% of 12.66 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     59.5    7.53    0.00                 MPI::Comm::Abort(int) [1]
+-----------------------------------------------
+                             2097152             void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [2]
+[2]     19.1    0.28    2.13       0+2097152 void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [2]
+                1.01    0.00 2097152/2097152     void miniFE::sum_in_symm_elem_matrix<miniFE::CSRMatrix<double, int, int> >(unsigned long, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType const*, miniFE::CSRMatrix<double, int, int>::ScalarType const*, miniFE::CSRMatrix<double, int, int>&) [7]
+                0.51    0.32 2097152/2097152     void miniFE::Hex8::diffusionMatrix_symm<double>(double const*, double const*, double*) [9]
+                0.23    0.00 16777216/16777216     void miniFE::Hex8::gradients_and_detJ<double>(double const*, double const*, double&) [11]
+                0.03    0.00 16777216/73943687     int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) [13]
+                0.03    0.00 2097152/2097152     void miniFE::compute_gradient_values<double>(double*) [17]
+                             2097152             void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [2]
+-----------------------------------------------
+                                                 <spontaneous>
+[3]     13.7    0.00    1.74                 main [3]
+                0.02    1.66       1/1           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+                0.06    0.00      11/280         frame_dummy [5]
+                0.00    0.00       1/2           add_timestring_to_yaml(YAML_Doc&) [21]
+                0.00    0.00       2/2025        miniFE::mytimer() [29]
+                0.00    0.00       2/2           YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, long long) [40]
+                0.00    0.00       1/1           miniFE::get_parameters(int, char**, miniFE::Parameters&) [50]
+                0.00    0.00       1/1           miniFE::initialize_mpi(int, char**, int&, int&) [51]
+                0.00    0.00       1/1           miniFE::broadcast_parameters(miniFE::Parameters&) [54]
+                0.00    0.00       1/1           box_partition(int, int, int, Box const&, Box*) [45]
+                0.00    0.00       1/1           YAML_Doc::YAML_Doc(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [59]
+                0.00    0.00       1/1           add_params_to_yaml(YAML_Doc&, miniFE::Parameters&) [46]
+                0.00    0.00       1/1           add_configuration_to_yaml(YAML_Doc&, int, int) [47]
+                0.00    0.00       1/1           YAML_Element::~YAML_Element() [48]
+                0.00    0.00       1/1           YAML_Doc::~YAML_Doc() [60]
+                0.00    0.00       1/1           miniFE::finalize_mpi() [49]
+                0.00    0.00       1/1           std::vector<Box, std::allocator<Box> >::~vector() [61]
+                0.00    0.00       1/24          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double) [33]
+                0.00    0.00       1/1           YAML_Doc::generateYAML[abi:cxx11]() [58]
+-----------------------------------------------
+                0.02    1.66       1/1           main [3]
+[4]     13.2    0.02    1.66       1         int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+                0.00    1.07       1/1           void miniFE::cg_solve<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int>, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> > >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int> const&, miniFE::Vector<double, int, int>&, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType&, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, double*) [6]
+                0.26    0.00      49/280         frame_dummy [5]
+                0.07    0.14       1/1           void miniFE::init_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, std::vector<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&, std::vector<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType> > const&, std::vector<int, std::allocator<int> > const&, int, int, int, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&) [12]
+                0.00    0.10       1/1           unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [14]
+                0.00    0.01       1/1           miniFE::simple_mesh_description<int>::simple_mesh_description(Box const&, Box const&) [18]
+                0.00    0.00       1/2           add_timestring_to_yaml(YAML_Doc&) [21]
+                0.00    0.00      24/55          YAML_Element::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [31]
+                0.00    0.00      16/24          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double) [33]
+                0.00    0.00      15/2025        miniFE::mytimer() [29]
+                0.00    0.00       7/23          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [34]
+                0.00    0.00       2/2           MPI::Intracomm::Split(int, int) const [43]
+                0.00    0.00       2/5           std::vector<int, std::allocator<int> >::_M_default_append(unsigned long) [39]
+                0.00    0.00       1/2           std::vector<int, std::allocator<int> >::reserve(unsigned long) [44]
+                0.00    0.00       1/1           void miniFE::make_local_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&) [52]
+                0.00    0.00       1/6           YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int) [37]
+-----------------------------------------------
+                               13734             frame_dummy [5]
+                0.01    0.00       1/280         add_timestring_to_yaml(YAML_Doc&) [21]
+                0.06    0.00      11/280         main [3]
+                0.10    0.00      19/280         unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [14]
+                0.26    0.00      49/280         int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+                1.07    0.00     200/280         void miniFE::cg_solve<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int>, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> > >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int> const&, miniFE::Vector<double, int, int>&, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType&, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, double*) [6]
+[5]     11.8    1.50    0.00     280+13734   frame_dummy [5]
+                               13734             frame_dummy [5]
+-----------------------------------------------
+                0.00    1.07       1/1           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[6]      8.5    0.00    1.07       1         void miniFE::cg_solve<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int>, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> > >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int> const&, miniFE::Vector<double, int, int>&, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType&, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, double*) [6]
+                1.07    0.00     200/280         frame_dummy [5]
+                0.00    0.00    2008/2025        miniFE::mytimer() [29]
+                0.00    0.00     201/201         void miniFE::exchange_externals<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int>&) [30]
+-----------------------------------------------
+                1.01    0.00 2097152/2097152     void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [2]
+[7]      8.0    1.01    0.00 2097152         void miniFE::sum_in_symm_elem_matrix<miniFE::CSRMatrix<double, int, int> >(unsigned long, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType const*, miniFE::CSRMatrix<double, int, int>::ScalarType const*, miniFE::CSRMatrix<double, int, int>&) [7]
+-----------------------------------------------
+                                                 <spontaneous>
+[8]      7.4    0.94    0.00                 MPI::Datatype::Create_contiguous(int) const [8]
+-----------------------------------------------
+                0.51    0.32 2097152/2097152     void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [2]
+[9]      6.6    0.51    0.32 2097152         void miniFE::Hex8::diffusionMatrix_symm<double>(double const*, double const*, double*) [9]
+                0.32    0.00 16777216/16777216     void miniFE::Hex8::gradients_and_invJ_and_detJ<double>(double const*, double const*, double*, double&) [10]
+-----------------------------------------------
+                0.32    0.00 16777216/16777216     void miniFE::Hex8::diffusionMatrix_symm<double>(double const*, double const*, double*) [9]
+[10]     2.5    0.32    0.00 16777216         void miniFE::Hex8::gradients_and_invJ_and_detJ<double>(double const*, double const*, double*, double&) [10]
+-----------------------------------------------
+                0.23    0.00 16777216/16777216     void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [2]
+[11]     1.8    0.23    0.00 16777216         void miniFE::Hex8::gradients_and_detJ<double>(double const*, double const*, double&) [11]
+-----------------------------------------------
+                0.07    0.14       1/1           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[12]     1.6    0.07    0.14       1         void miniFE::init_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, std::vector<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&, std::vector<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType> > const&, std::vector<int, std::allocator<int> > const&, int, int, int, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&) [12]
+                0.11    0.00 57066625/73943687     int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) [13]
+                0.03    0.00 2146689/2146689     void sort_if_needed<int>(int*, int) [16]
+                0.00    0.00       1/1           std::vector<double, std::allocator<double> >::_M_default_append(unsigned long) [62]
+                0.00    0.00       1/5           std::vector<int, std::allocator<int> >::_M_default_append(unsigned long) [39]
+-----------------------------------------------
+                             2146689             int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) [13]
+                0.00    0.00   99846/73943687     miniFE::simple_mesh_description<int>::simple_mesh_description(Box const&, Box const&) [18]
+                0.03    0.00 16777216/73943687     void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [2]
+                0.11    0.00 57066625/73943687     void miniFE::init_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, std::vector<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&, std::vector<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType> > const&, std::vector<int, std::allocator<int> > const&, int, int, int, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&) [12]
+[13]     1.1    0.14    0.00 73943687+2146689 int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) [13]
+                             2146689             int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) [13]
+-----------------------------------------------
+                0.00    0.10       1/1           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[14]     0.8    0.00    0.10       1         unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [14]
+                0.10    0.00      19/280         frame_dummy [5]
+                0.00    0.00      10/55          YAML_Element::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [31]
+                0.00    0.00       6/6           YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [38]
+                0.00    0.00       4/24          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double) [33]
+                0.00    0.00       1/2           void miniFE::get_global_min_max<int>(int, int&, int&, int&, int&, int&) [41]
+                0.00    0.00       1/1           void miniFE::get_global_min_max<double>(double, double&, double&, int&, double&, int&) [53]
+                0.00    0.00       1/23          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [34]
+-----------------------------------------------
+                                                 <spontaneous>
+[15]     0.3    0.04    0.00                 _init [15]
+-----------------------------------------------
+                0.03    0.00 2146689/2146689     void miniFE::init_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, std::vector<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&, std::vector<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType> > const&, std::vector<int, std::allocator<int> > const&, int, int, int, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&) [12]
+[16]     0.2    0.03    0.00 2146689         void sort_if_needed<int>(int*, int) [16]
+-----------------------------------------------
+                0.03    0.00 2097152/2097152     void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [2]
+[17]     0.2    0.03    0.00 2097152         void miniFE::compute_gradient_values<double>(double*) [17]
+-----------------------------------------------
+                0.00    0.01       1/1           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[18]     0.1    0.00    0.01       1         miniFE::simple_mesh_description<int>::simple_mesh_description(Box const&, Box const&) [18]
+                0.00    0.01       1/1           void miniFE::create_map_id_to_row<int>(int, int, int, Box const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >&) [19]
+                0.00    0.00   99846/73943687     int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) [13]
+                0.00    0.00   66564/66564       std::pair<std::_Rb_tree_iterator<int>, bool> std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_insert_unique<int>(int&&) [27]
+                0.00    0.00   33282/33282       std::pair<std::_Rb_tree_iterator<int>, bool> std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_insert_unique<int const&>(int const&) [28]
+-----------------------------------------------
+                0.00    0.01       1/1           miniFE::simple_mesh_description<int>::simple_mesh_description(Box const&, Box const&) [18]
+[19]     0.1    0.00    0.01       1         void miniFE::create_map_id_to_row<int>(int, int, int, Box const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >&) [19]
+                0.01    0.00       1/1           void miniFE::get_ids<int>(int, int, int, Box const&, std::vector<int, std::allocator<int> >&, bool) [20]
+                0.00    0.00       2/5           std::vector<int, std::allocator<int> >::_M_default_append(unsigned long) [39]
+                0.00    0.00       1/1           std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::pair<int, int> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::pair<int, int>&&) [63]
+-----------------------------------------------
+                0.01    0.00       1/1           void miniFE::create_map_id_to_row<int>(int, int, int, Box const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >&) [19]
+[20]     0.1    0.01    0.00       1         void miniFE::get_ids<int>(int, int, int, Box const&, std::vector<int, std::allocator<int> >&, bool) [20]
+                0.00    0.00       1/2           std::vector<int, std::allocator<int> >::reserve(unsigned long) [44]
+-----------------------------------------------
+                0.00    0.00       1/2           main [3]
+                0.00    0.00       1/2           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[21]     0.0    0.00    0.01       2         add_timestring_to_yaml(YAML_Doc&) [21]
+                0.01    0.00       1/280         frame_dummy [5]
+                0.00    0.00       2/23          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [34]
+                0.00    0.00       2/55          YAML_Element::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [31]
+                0.00    0.00       2/24          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double) [33]
+                0.00    0.00       1/2           void miniFE::get_global_min_max<int>(int, int&, int&, int&, int&, int&) [41]
+                0.00    0.00       1/1           float miniFE::compute_std_dev_as_percentage<float>(float, float) [55]
+-----------------------------------------------
+                0.00    0.00   66564/66564       miniFE::simple_mesh_description<int>::simple_mesh_description(Box const&, Box const&) [18]
+[27]     0.0    0.00    0.00   66564         std::pair<std::_Rb_tree_iterator<int>, bool> std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_insert_unique<int>(int&&) [27]
+-----------------------------------------------
+                0.00    0.00   33282/33282       miniFE::simple_mesh_description<int>::simple_mesh_description(Box const&, Box const&) [18]
+[28]     0.0    0.00    0.00   33282         std::pair<std::_Rb_tree_iterator<int>, bool> std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_insert_unique<int const&>(int const&) [28]
+-----------------------------------------------
+                0.00    0.00       2/2025        main [3]
+                0.00    0.00      15/2025        int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+                0.00    0.00    2008/2025        void miniFE::cg_solve<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int>, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> > >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int> const&, miniFE::Vector<double, int, int>&, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType&, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, double*) [6]
+[29]     0.0    0.00    0.00    2025         miniFE::mytimer() [29]
+-----------------------------------------------
+                0.00    0.00     201/201         void miniFE::cg_solve<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int>, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> > >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int> const&, miniFE::Vector<double, int, int>&, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType&, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, double*) [6]
+[30]     0.0    0.00    0.00     201         void miniFE::exchange_externals<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int>&) [30]
+-----------------------------------------------
+                0.00    0.00       2/55          add_timestring_to_yaml(YAML_Doc&) [21]
+                0.00    0.00       9/55          add_configuration_to_yaml(YAML_Doc&, int, int) [47]
+                0.00    0.00      10/55          add_params_to_yaml(YAML_Doc&, miniFE::Parameters&) [46]
+                0.00    0.00      10/55          unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [14]
+                0.00    0.00      24/55          int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[31]     0.0    0.00    0.00      55         YAML_Element::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [31]
+-----------------------------------------------
+                0.00    0.00       4/35          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [38]
+                0.00    0.00       5/35          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int) [37]
+                0.00    0.00      13/35          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [34]
+                0.00    0.00      13/35          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double) [33]
+[32]     0.0    0.00    0.00      35         void std::vector<YAML_Element*, std::allocator<YAML_Element*> >::_M_realloc_insert<YAML_Element* const&>(__gnu_cxx::__normal_iterator<YAML_Element**, std::vector<YAML_Element*, std::allocator<YAML_Element*> > >, YAML_Element* const&) [32]
+-----------------------------------------------
+                0.00    0.00       1/24          main [3]
+                0.00    0.00       1/24          add_params_to_yaml(YAML_Doc&, miniFE::Parameters&) [46]
+                0.00    0.00       2/24          add_timestring_to_yaml(YAML_Doc&) [21]
+                0.00    0.00       4/24          unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [14]
+                0.00    0.00      16/24          int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[33]     0.0    0.00    0.00      24         YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double) [33]
+                0.00    0.00      13/35          void std::vector<YAML_Element*, std::allocator<YAML_Element*> >::_M_realloc_insert<YAML_Element* const&>(__gnu_cxx::__normal_iterator<YAML_Element**, std::vector<YAML_Element*, std::allocator<YAML_Element*> > >, YAML_Element* const&) [32]
+-----------------------------------------------
+                0.00    0.00       1/23          unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [14]
+                0.00    0.00       2/23          add_timestring_to_yaml(YAML_Doc&) [21]
+                0.00    0.00       3/23          add_params_to_yaml(YAML_Doc&, miniFE::Parameters&) [46]
+                0.00    0.00       7/23          int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+                0.00    0.00      10/23          add_configuration_to_yaml(YAML_Doc&, int, int) [47]
+[34]     0.0    0.00    0.00      23         YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [34]
+                0.00    0.00      13/35          void std::vector<YAML_Element*, std::allocator<YAML_Element*> >::_M_realloc_insert<YAML_Element* const&>(__gnu_cxx::__normal_iterator<YAML_Element**, std::vector<YAML_Element*, std::allocator<YAML_Element*> > >, YAML_Element* const&) [32]
+-----------------------------------------------
+                0.00    0.00      13/13          miniFE::get_parameters(int, char**, miniFE::Parameters&) [50]
+[35]     0.0    0.00    0.00      13         int Mantevo::parse_parameter<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int const&) [35]
+-----------------------------------------------
+                                  49             YAML_Element::printYAML(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [36]
+                0.00    0.00      12/12          YAML_Doc::generateYAML[abi:cxx11]() [58]
+[36]     0.0    0.00    0.00      12+49      YAML_Element::printYAML(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [36]
+                                  49             YAML_Element::printYAML(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [36]
+-----------------------------------------------
+                0.00    0.00       1/6           add_configuration_to_yaml(YAML_Doc&, int, int) [47]
+                0.00    0.00       1/6           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+                0.00    0.00       4/6           add_params_to_yaml(YAML_Doc&, miniFE::Parameters&) [46]
+[37]     0.0    0.00    0.00       6         YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int) [37]
+                0.00    0.00       5/35          void std::vector<YAML_Element*, std::allocator<YAML_Element*> >::_M_realloc_insert<YAML_Element* const&>(__gnu_cxx::__normal_iterator<YAML_Element**, std::vector<YAML_Element*, std::allocator<YAML_Element*> > >, YAML_Element* const&) [32]
+-----------------------------------------------
+                0.00    0.00       6/6           unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [14]
+[38]     0.0    0.00    0.00       6         YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [38]
+                0.00    0.00       4/35          void std::vector<YAML_Element*, std::allocator<YAML_Element*> >::_M_realloc_insert<YAML_Element* const&>(__gnu_cxx::__normal_iterator<YAML_Element**, std::vector<YAML_Element*, std::allocator<YAML_Element*> > >, YAML_Element* const&) [32]
+-----------------------------------------------
+                0.00    0.00       1/5           void miniFE::init_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, std::vector<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&, std::vector<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType> > const&, std::vector<int, std::allocator<int> > const&, int, int, int, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&) [12]
+                0.00    0.00       2/5           void miniFE::create_map_id_to_row<int>(int, int, int, Box const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >&) [19]
+                0.00    0.00       2/5           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[39]     0.0    0.00    0.00       5         std::vector<int, std::allocator<int> >::_M_default_append(unsigned long) [39]
+-----------------------------------------------
+                0.00    0.00       2/2           main [3]
+[40]     0.0    0.00    0.00       2         YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, long long) [40]
+-----------------------------------------------
+                0.00    0.00       1/2           add_timestring_to_yaml(YAML_Doc&) [21]
+                0.00    0.00       1/2           unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [14]
+[41]     0.0    0.00    0.00       2         void miniFE::get_global_min_max<int>(int, int&, int&, int&, int&, int&) [41]
+-----------------------------------------------
+                0.00    0.00       2/2           miniFE::get_parameters(int, char**, miniFE::Parameters&) [50]
+[42]     0.0    0.00    0.00       2         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > Mantevo::parse_parameter<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [42]
+-----------------------------------------------
+                0.00    0.00       2/2           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[43]     0.0    0.00    0.00       2         MPI::Intracomm::Split(int, int) const [43]
+-----------------------------------------------
+                0.00    0.00       1/2           void miniFE::get_ids<int>(int, int, int, Box const&, std::vector<int, std::allocator<int> >&, bool) [20]
+                0.00    0.00       1/2           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[44]     0.0    0.00    0.00       2         std::vector<int, std::allocator<int> >::reserve(unsigned long) [44]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[45]     0.0    0.00    0.00       1         box_partition(int, int, int, Box const&, Box*) [45]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[46]     0.0    0.00    0.00       1         add_params_to_yaml(YAML_Doc&, miniFE::Parameters&) [46]
+                0.00    0.00      10/55          YAML_Element::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [31]
+                0.00    0.00       4/6           YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int) [37]
+                0.00    0.00       3/23          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [34]
+                0.00    0.00       1/24          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double) [33]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[47]     0.0    0.00    0.00       1         add_configuration_to_yaml(YAML_Doc&, int, int) [47]
+                0.00    0.00      10/23          YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [34]
+                0.00    0.00       9/55          YAML_Element::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [31]
+                0.00    0.00       1/6           YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int) [37]
+-----------------------------------------------
+                                  61             YAML_Element::~YAML_Element() [48]
+                0.00    0.00       1/1           main [3]
+[48]     0.0    0.00    0.00       1+61      YAML_Element::~YAML_Element() [48]
+                                  61             YAML_Element::~YAML_Element() [48]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[49]     0.0    0.00    0.00       1         miniFE::finalize_mpi() [49]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[50]     0.0    0.00    0.00       1         miniFE::get_parameters(int, char**, miniFE::Parameters&) [50]
+                0.00    0.00      13/13          int Mantevo::parse_parameter<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int const&) [35]
+                0.00    0.00       2/2           std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > Mantevo::parse_parameter<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [42]
+                0.00    0.00       1/1           Mantevo::read_args_into_string(int, char**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [57]
+                0.00    0.00       1/1           float Mantevo::parse_parameter<float>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, float const&) [56]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[51]     0.0    0.00    0.00       1         miniFE::initialize_mpi(int, char**, int&, int&) [51]
+-----------------------------------------------
+                0.00    0.00       1/1           int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [4]
+[52]     0.0    0.00    0.00       1         void miniFE::make_local_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&) [52]
+-----------------------------------------------
+                0.00    0.00       1/1           unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [14]
+[53]     0.0    0.00    0.00       1         void miniFE::get_global_min_max<double>(double, double&, double&, int&, double&, int&) [53]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[54]     0.0    0.00    0.00       1         miniFE::broadcast_parameters(miniFE::Parameters&) [54]
+-----------------------------------------------
+                0.00    0.00       1/1           add_timestring_to_yaml(YAML_Doc&) [21]
+[55]     0.0    0.00    0.00       1         float miniFE::compute_std_dev_as_percentage<float>(float, float) [55]
+-----------------------------------------------
+                0.00    0.00       1/1           miniFE::get_parameters(int, char**, miniFE::Parameters&) [50]
+[56]     0.0    0.00    0.00       1         float Mantevo::parse_parameter<float>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, float const&) [56]
+-----------------------------------------------
+                0.00    0.00       1/1           miniFE::get_parameters(int, char**, miniFE::Parameters&) [50]
+[57]     0.0    0.00    0.00       1         Mantevo::read_args_into_string(int, char**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [57]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[58]     0.0    0.00    0.00       1         YAML_Doc::generateYAML[abi:cxx11]() [58]
+                0.00    0.00      12/12          YAML_Element::printYAML(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [36]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[59]     0.0    0.00    0.00       1         YAML_Doc::YAML_Doc(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [59]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[60]     0.0    0.00    0.00       1         YAML_Doc::~YAML_Doc() [60]
+-----------------------------------------------
+                0.00    0.00       1/1           main [3]
+[61]     0.0    0.00    0.00       1         std::vector<Box, std::allocator<Box> >::~vector() [61]
+-----------------------------------------------
+                0.00    0.00       1/1           void miniFE::init_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, std::vector<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&, std::vector<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType> > const&, std::vector<int, std::allocator<int> > const&, int, int, int, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&) [12]
+[62]     0.0    0.00    0.00       1         std::vector<double, std::allocator<double> >::_M_default_append(unsigned long) [62]
+-----------------------------------------------
+                0.00    0.00       1/1           void miniFE::create_map_id_to_row<int>(int, int, int, Box const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >&) [19]
+[63]     0.0    0.00    0.00       1         std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::pair<int, int> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::pair<int, int>&&) [63]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [45] box_partition(int, int, int, Box const&, Box*) [52] void miniFE::make_local_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&) [42] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > Mantevo::parse_parameter<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  [16] void sort_if_needed<int>(int*, int) [30] void miniFE::exchange_externals<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int>&) [56] float Mantevo::parse_parameter<float>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, float const&)
+  [46] add_params_to_yaml(YAML_Doc&, miniFE::Parameters&) [53] void miniFE::get_global_min_max<double>(double, double&, double&, int&, double&, int&) [35] int Mantevo::parse_parameter<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int const&)
+  [21] add_timestring_to_yaml(YAML_Doc&) [41] void miniFE::get_global_min_max<int>(int, int&, int&, int&, int&, int&) [57] Mantevo::read_args_into_string(int, char**, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&)
+  [47] add_configuration_to_yaml(YAML_Doc&, int, int) [54] miniFE::broadcast_parameters(miniFE::Parameters&) [58] YAML_Doc::generateYAML[abi:cxx11]()
+  [34] YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [14] unsigned long miniFE::compute_matrix_stats<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int> const&, int, int, YAML_Doc&) [59] YAML_Doc::YAML_Doc(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  [33] YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double) [19] void miniFE::create_map_id_to_row<int>(int, int, int, Box const&, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >&) [60] YAML_Doc::~YAML_Doc()
+  [37] YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int) [17] void miniFE::compute_gradient_values<double>(double*) [8] MPI::Datatype::Create_contiguous(int) const
+  [38] YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [18] miniFE::simple_mesh_description<int>::simple_mesh_description(Box const&, Box const&) [43] MPI::Intracomm::Split(int, int) const
+  [40] YAML_Element::add(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, long long) [7] void miniFE::sum_in_symm_elem_matrix<miniFE::CSRMatrix<double, int, int> >(unsigned long, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType const*, miniFE::CSRMatrix<double, int, int>::ScalarType const*, miniFE::CSRMatrix<double, int, int>&) [61] std::vector<Box, std::allocator<Box> >::~vector()
+  [31] YAML_Element::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [55] float miniFE::compute_std_dev_as_percentage<float>(float, float) [32] void std::vector<YAML_Element*, std::allocator<YAML_Element*> >::_M_realloc_insert<YAML_Element* const&>(__gnu_cxx::__normal_iterator<YAML_Element**, std::vector<YAML_Element*, std::allocator<YAML_Element*> > >, YAML_Element* const&)
+  [36] YAML_Element::printYAML(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [2] void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*) [62] std::vector<double, std::allocator<double> >::_M_default_append(unsigned long)
+  [48] YAML_Element::~YAML_Element() [11] void miniFE::Hex8::gradients_and_detJ<double>(double const*, double const*, double&) [39] std::vector<int, std::allocator<int> >::_M_default_append(unsigned long)
+   [1] MPI::Comm::Abort(int)   [9] void miniFE::Hex8::diffusionMatrix_symm<double>(double const*, double const*, double*) [44] std::vector<int, std::allocator<int> >::reserve(unsigned long)
+  [12] void miniFE::init_matrix<miniFE::CSRMatrix<double, int, int> >(miniFE::CSRMatrix<double, int, int>&, std::vector<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> > const&, std::vector<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, std::allocator<miniFE::CSRMatrix<double, int, int>::LocalOrdinalType> > const&, std::vector<int, std::allocator<int> > const&, int, int, int, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType, miniFE::simple_mesh_description<miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType> const&) [10] void miniFE::Hex8::gradients_and_invJ_and_detJ<double>(double const*, double const*, double*, double&) [63] std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::pair<int, int> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::pair<int, int>&&)
+  [49] miniFE::finalize_mpi()  [4] int miniFE::driver<double, int, int>(Box const&, Box&, miniFE::Parameters&, YAML_Doc&) [28] std::pair<std::_Rb_tree_iterator<int>, bool> std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_insert_unique<int const&>(int const&)
+  [50] miniFE::get_parameters(int, char**, miniFE::Parameters&) [20] void miniFE::get_ids<int>(int, int, int, Box const&, std::vector<int, std::allocator<int> >&, bool) [27] std::pair<std::_Rb_tree_iterator<int>, bool> std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_insert_unique<int>(int&&)
+  [51] miniFE::initialize_mpi(int, char**, int&, int&) [29] miniFE::mytimer() [15] _init
+  [13] int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&) [6] void miniFE::cg_solve<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int>, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> > >(miniFE::CSRMatrix<double, int, int>&, miniFE::Vector<double, int, int> const&, miniFE::Vector<double, int, int>&, miniFE::matvec_std<miniFE::CSRMatrix<double, int, int>, miniFE::Vector<double, int, int> >, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, miniFE::CSRMatrix<double, int, int>::LocalOrdinalType&, miniFE::TypeTraits<miniFE::CSRMatrix<double, int, int>::ScalarType>::magnitude_type&, double*) [5] frame_dummy

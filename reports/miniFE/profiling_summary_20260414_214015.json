@@ -1,0 +1,23 @@
+{
+  "application": "miniFE",
+  "language": "cpp",
+  "timestamp": "20260414_214015",
+  "config": {
+    "mpi_ranks": 1,
+    "problem_args": "-nx 128 -ny 128 -nz 128",
+    "baseline_runs": 3,
+    "build_system": "make"
+  },
+  "gprof_hotspots": [
+    {"pct_time": "time", "cumulative_sec": "seconds", "self_sec": "seconds", "calls": "calls", "function": "name"},
+    {"pct_time": "12.53", "cumulative_sec": "10.44", "self_sec": "1.82", "calls": "280", "function": "frame_dummy"},
+    {"pct_time": "7.37", "cumulative_sec": "11.51", "self_sec": "1.07", "calls": "1439479", "function": "void"},
+    {"pct_time": "4.68", "cumulative_sec": "13.23", "self_sec": "0.68", "calls": "1410000", "function": "void"},
+    {"pct_time": "2.62", "cumulative_sec": "13.61", "self_sec": "0.38", "calls": "11390349", "function": "void"},
+    {"pct_time": "2.20", "cumulative_sec": "13.93", "self_sec": "0.32", "calls": "11445354", "function": "void"},
+    {"pct_time": "2.00", "cumulative_sec": "14.22", "self_sec": "0.29", "calls": "void", "function": "double"},
+    {"pct_time": "1.03", "cumulative_sec": "14.37", "self_sec": "0.15", "calls": "69194452", "function": "int"}
+  ],
+  "source_dir": "/home/suuiopxl/Individual-project/apps/miniFE/openmp/src",
+  "next_step": "Run 02_analyze_hotspots.py miniFE to feed hotspot functions to LLM"
+}
