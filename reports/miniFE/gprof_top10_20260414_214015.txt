@@ -1,0 +1,10 @@
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 59.37      8.62     8.62                             MPI::Comm::Abort(int)
+ 12.53     10.44     1.82      280     0.01     0.01  frame_dummy
+  7.37     11.51     1.07  1439479     0.00     0.00  void miniFE::sum_in_symm_elem_matrix<miniFE::CSRMatrix<double, int, int> >(unsigned long, miniFE::CSRMatrix<double, int, int>::GlobalOrdinalType const*, miniFE::CSRMatrix<double, int, int>::ScalarType const*, miniFE::CSRMatrix<double, int, int>&)
+  7.16     12.55     1.04                             MPI::Datatype::Create_contiguous(int) const
+  4.68     13.23     0.68  1410000     0.00     0.00  void miniFE::Hex8::diffusionMatrix_symm<double>(double const*, double const*, double*)
+  2.62     13.61     0.38 11390349     0.00     0.00  void miniFE::Hex8::gradients_and_invJ_and_detJ<double>(double const*, double const*, double*, double&)
+  2.20     13.93     0.32 11445354     0.00     0.00  void miniFE::Hex8::gradients_and_detJ<double>(double const*, double const*, double&)
+  2.00     14.22     0.29                             void miniFE::Hex8::sourceVector<double>(double const*, double const*, double*)
+  1.03     14.37     0.15 69194452     0.00     0.00  int miniFE::find_row_for_id<int>(int, std::map<int, int, std::less<int>, std::allocator<std::pair<int const, int> > > const&)

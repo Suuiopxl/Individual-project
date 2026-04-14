@@ -1,0 +1,13 @@
+==============================
+miniFE Baseline Summary
+==============================
+Date:       Tue Apr 14 21:46:22 BST 2026
+Language:   cpp
+MPI:        true (ranks: 1)
+Runs:       3
+Args:       -nx 128 -ny 128 -nz 128
+Wall-clock times (ms): 13709 16147 13257
+Average:  14371 ms
+Min:      13257 ms
+Max:      16147 ms
+==============================
