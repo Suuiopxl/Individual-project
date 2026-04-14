@@ -1,31 +1,35 @@
 {
   "_comment": "Central configuration for all test applications. Scripts read this file instead of hardcoding app-specific logic.",
-
   "miniGhost": {
     "language": "fortran",
     "domain": "3D stencil heat diffusion",
     "repo_url": "https://github.com/Mantevo/miniGhost.git",
     "src_subdir": "ref",
-
     "build": {
       "system": "make",
       "makefile": "makefile.mpi.gnu",
-      "compiler": { "FC": "mpifort", "CC": "mpicc", "LD": "mpifort" },
+      "compiler": {
+        "FC": "mpifort",
+        "CC": "mpicc",
+        "LD": "mpifort"
+      },
       "binary_name": "miniGhost.x",
       "pre_build_fixes": [
         "sed -i 's|^MPI_LOC *=.*$|MPI_LOC =|g' {makefile}",
         "sed -i 's|^MPI_INCLUDE *=.*$|MPI_INCLUDE =|g' {makefile}"
       ],
-      "extra_fflags": ["-ffree-form", "-fallow-argument-mismatch", "-ffree-line-length-none"]
+      "extra_fflags": [
+        "-ffree-form",
+        "-fallow-argument-mismatch",
+        "-ffree-line-length-none"
+      ]
     },
-
     "run": {
       "requires_mpi": true,
       "default_np": 2,
       "args": "--nx 100 --ny 100 --nz 100 --num_tsteps 20 --num_vars 5",
       "baseline_runs": 3
     },
-
     "profiling": {
       "gprof_flags": "-pg",
       "top_n": 10,
@@ -35,7 +39,6 @@
         "mg_flux_accumulate_2d5pt_3d7pt"
       ]
     },
-
     "gpu_patch": {
       "strategy": "openacc",
       "patch_module": "patches.miniGhost_patch",
@@ -47,26 +50,27 @@
       "gpu_fflags": "-O2 -acc -gpu=mem:managed -Minfo=accel -Mfreeform -D_MG_MPI -D_MG_INT4 -D_MG_REAL8",
       "gpu_ldflags": "-acc -gpu=mem:managed -fortranlibs",
       "gpu_binary_name": "miniGhost_gpu.x",
-      "source_extensions": [".F"]
+      "source_extensions": [
+        ".F"
+      ]
     }
   },
-
   "XSBench": {
     "language": "c",
     "domain": "Nuclear reactor cross-section lookup (Monte Carlo)",
     "repo_url": "https://github.com/ANL-CESAR/XSBench.git",
     "src_subdir": "openmp-threading",
     "cuda_src_subdir": "cuda",
-
     "build": {
       "system": "make",
       "makefile": "Makefile",
-      "compiler": { "CC": "gcc" },
+      "compiler": {
+        "CC": "gcc"
+      },
       "binary_name": "XSBench",
       "pre_build_fixes": [],
       "_note_profile": "XSBench Makefile uses PROFILE=yes flag, not sed on CFLAGS. See 01_profile_app.sh adaptation."
     },
-
     "run": {
       "requires_mpi": false,
       "default_np": 1,
@@ -75,7 +79,6 @@
       "profiling_args": "-t 1 -s large -l 1000000",
       "_note": "-t 1 single-thread for gprof; -s large + high lookups to wash out init phase"
     },
-
     "profiling": {
       "gprof_flags": "-pg",
       "profile_make_args": "PROFILE=yes",
@@ -88,85 +91,100 @@
         "run_event_based_simulation"
       ]
     },
-
     "gpu_patch": {
       "strategy": "cuda",
-      "patch_module": "patches.xsbench_patch",
-      "gpu_compiler": { "CC": "nvcc" },
+      "gpu_compiler": {
+        "CC": "nvcc"
+      },
       "gpu_flags": "-O2 -arch=sm_89",
       "gpu_binary_name": "XSBench_gpu",
-      "source_extensions": [".c", ".h"],
+      "source_extensions": [
+        ".c",
+        ".h"
+      ],
       "official_cuda_dir": "cuda",
-      "_note": "XSBench ships with an official cuda/ directory. Compare LLM-generated CUDA against it."
+      "_note": "CUDA port done manually via LLM. See apps/XSBench_gpu/cuda_manual/. Compare against official cuda/ dir."
     }
   },
-
-  "udunits": {
-    "language": "c",
-    "domain": "Physical unit conversion library",
-    "repo_url": "https://github.com/Unidata/UDUNITS-2.git",
-    "src_subdir": "lib",
-
+  "miniFE": {
+    "language": "cpp",
+    "domain": "Implicit finite element (CG solver / SpMV)",
+    "repo_url": "https://github.com/Mantevo/miniFE.git",
+    "src_subdir": "openmp/src",
     "build": {
-      "system": "cmake",
-      "cmake_args": ["-DCMAKE_BUILD_TYPE=Release"],
-      "compiler": { "CC": "gcc", "CXX": "g++" },
-      "binary_name": "libudunits2.so",
-      "dependencies": ["libexpat1-dev", "cmake"],
-      "pre_build_fixes": []
+      "system": "make",
+      "makefile": "Makefile",
+      "compiler": {
+        "CXX": "mpicxx",
+        "CC": "mpicc"
+      },
+      "binary_name": "miniFE.x",
+      "dependencies": [],
+      "pre_build_fixes": [],
+      "_note_profile": "miniFE openmp/src/Makefile uses standard CXX and CXXFLAGS."
     },
-
     "run": {
-      "requires_mpi": false,
+      "requires_mpi": true,
       "default_np": 1,
-      "args": "",
+      "args": "-nx 128 -ny 128 -nz 128",
       "baseline_runs": 3,
-      "benchmark_command": "udunits2 -H 'kg' -W 'lb'"
+      "_note": "Single MPI rank for profiling; increase nx/ny/nz for longer runtime"
     },
-
     "profiling": {
       "gprof_flags": "-pg",
       "top_n": 10,
       "hotspot_keywords": [
-        "ut_convert",
-        "cv_convert_double",
-        "ut_parse",
-        "ut_format"
+        "matvec",
+        "waxpby",
+        "dot",
+        "cg_solve",
+        "impose_dirichlet"
       ]
     },
-
     "gpu_patch": {
       "strategy": "cuda",
-      "patch_module": "patches.udunits_patch",
-      "gpu_compiler": { "CC": "nvcc", "CXX": "nvc++" },
-      "gpu_flags": "-O2",
-      "gpu_binary_name": "libudunits2_gpu.so",
-      "source_extensions": [".c", ".h"]
+      "gpu_compiler": {
+        "CXX": "nvcc",
+        "CC": "nvcc"
+      },
+      "gpu_flags": "-O2 -arch=sm_89",
+      "gpu_binary_name": "miniFE_gpu.x",
+      "source_extensions": [
+        ".cpp",
+        ".hpp",
+        ".h"
+      ],
+      "official_cuda_dir": "cuda",
+      "_note": "CUDA port done manually via LLM. miniFE ships with official cuda/ dir for comparison."
     }
   },
-
   "LAMMPS": {
     "language": "cpp",
     "domain": "Molecular dynamics simulation",
     "repo_url": "https://github.com/lammps/lammps.git",
     "src_subdir": "src",
-
     "build": {
       "system": "cmake",
-      "cmake_args": ["-DCMAKE_BUILD_TYPE=Release", "-DPKG_OPENMP=yes"],
-      "compiler": { "CXX": "g++" },
+      "cmake_args": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DPKG_OPENMP=yes"
+      ],
+      "compiler": {
+        "CXX": "g++"
+      },
       "binary_name": "lmp",
-      "dependencies": ["cmake", "libfftw3-dev"],
+      "dependencies": [
+        "cmake",
+        "libfftw3-dev"
+      ],
       "pre_build_fixes": []
     },
-
     "run": {
       "requires_mpi": true,
       "default_np": 4,
       "args": "-in bench/in.lj",
       "baseline_runs": 3
     },
-
     "profiling": {
       "gprof_flags": "-pg",
       "top_n": 10,
@@ -177,14 +195,19 @@
         "fix_enforce2d"
       ]
     },
-
     "gpu_patch": {
-      "strategy": "kokkos",
-      "patch_module": "patches.lammps_patch",
-      "gpu_compiler": { "CXX": "nvcc_wrapper" },
-      "gpu_flags": "-DKokkos_ENABLE_CUDA=ON",
+      "strategy": "cuda",
+      "gpu_compiler": {
+        "CXX": "nvcc",
+        "CC": "nvcc"
+      },
+      "gpu_flags": "-O2 -arch=sm_89",
       "gpu_binary_name": "lmp_gpu",
-      "source_extensions": [".cpp", ".h"]
+      "source_extensions": [
+        ".cpp",
+        ".h"
+      ],
+      "_note": "CUDA port done manually via LLM. Target: pair_lj_cut.cpp force loop."
     }
   }
 }

@@ -9,13 +9,11 @@ Architecture:
     patches/
     ├── __init__.py
     ├── miniGhost_patch.py    ← OpenMP → OpenACC for Fortran stencil code
-    ├── udunits_patch.py      ← C library → CUDA kernel extraction
     ├── xsbench_patch.py      ← C OpenMP → CUDA
-    └── lammps_patch.py       ← Kokkos GPU backend
 
 Usage:
     python3 scripts/03_apply_gpu_patch.py miniGhost
-    python3 scripts/03_apply_gpu_patch.py udunits
+    python3 scripts/03_apply_gpu_patch.py miniGhost
 """
 
 import os

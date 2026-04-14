@@ -54,3 +54,6 @@ apps/LAMMPS_gpu/unittest/
 # LAMMPS is too large for GitHub (~1GB), keep local only
 apps/LAMMPS/
 apps/LAMMPS_gpu/
+
+# miniFE build artifacts
+apps/miniFE_build/
