@@ -51,6 +51,56 @@
     }
   },
 
+  "XSBench": {
+    "language": "c",
+    "domain": "Nuclear reactor cross-section lookup (Monte Carlo)",
+    "repo_url": "https://github.com/ANL-CESAR/XSBench.git",
+    "src_subdir": "openmp-threading",
+    "cuda_src_subdir": "cuda",
+
+    "build": {
+      "system": "make",
+      "makefile": "Makefile",
+      "compiler": { "CC": "gcc" },
+      "binary_name": "XSBench",
+      "pre_build_fixes": [],
+      "_note_profile": "XSBench Makefile uses PROFILE=yes flag, not sed on CFLAGS. See 01_profile_app.sh adaptation."
+    },
+
+    "run": {
+      "requires_mpi": false,
+      "default_np": 1,
+      "args": "-t 4 -s small",
+      "baseline_runs": 3,
+      "profiling_args": "-t 1 -s large -l 1000000",
+      "_note": "-t 1 single-thread for gprof; -s large + high lookups to wash out init phase"
+    },
+
+    "profiling": {
+      "gprof_flags": "-pg",
+      "profile_make_args": "PROFILE=yes",
+      "top_n": 10,
+      "hotspot_keywords": [
+        "calculate_micro_xs",
+        "calculate_macro_xs",
+        "grid_search",
+        "binary_search",
+        "run_event_based_simulation"
+      ]
+    },
+
+    "gpu_patch": {
+      "strategy": "cuda",
+      "patch_module": "patches.xsbench_patch",
+      "gpu_compiler": { "CC": "nvcc" },
+      "gpu_flags": "-O2 -arch=sm_89",
+      "gpu_binary_name": "XSBench_gpu",
+      "source_extensions": [".c", ".h"],
+      "official_cuda_dir": "cuda",
+      "_note": "XSBench ships with an official cuda/ directory. Compare LLM-generated CUDA against it."
+    }
+  },
+
   "udunits": {
     "language": "c",
     "domain": "Physical unit conversion library",
@@ -91,48 +141,6 @@
       "gpu_compiler": { "CC": "nvcc", "CXX": "nvc++" },
       "gpu_flags": "-O2",
       "gpu_binary_name": "libudunits2_gpu.so",
-      "source_extensions": [".c", ".h"]
-    }
-  },
-
-  "XSBench": {
-    "language": "c",
-    "domain": "Nuclear reactor cross-section lookup",
-    "repo_url": "https://github.com/ANL-CESAR/XSBench.git",
-    "src_subdir": "src",
-
-    "build": {
-      "system": "make",
-      "makefile": "Makefile",
-      "compiler": { "CC": "gcc" },
-      "binary_name": "XSBench",
-      "pre_build_fixes": []
-    },
-
-    "run": {
-      "requires_mpi": false,
-      "default_np": 1,
-      "args": "-t 4 -s small",
-      "baseline_runs": 3
-    },
-
-    "profiling": {
-      "gprof_flags": "-pg",
-      "top_n": 10,
-      "hotspot_keywords": [
-        "calculate_micro_xs",
-        "calculate_macro_xs",
-        "grid_search",
-        "binary_search"
-      ]
-    },
-
-    "gpu_patch": {
-      "strategy": "cuda",
-      "patch_module": "patches.xsbench_patch",
-      "gpu_compiler": { "CC": "nvcc" },
-      "gpu_flags": "-O2 -arch=sm_70",
-      "gpu_binary_name": "XSBench_gpu",
       "source_extensions": [".c", ".h"]
     }
   },
