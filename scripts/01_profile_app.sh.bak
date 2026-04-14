@@ -70,7 +70,6 @@ SRC_SUBDIR=$(cfg "src_subdir")
 REQUIRES_MPI=$(cfg "run.requires_mpi")
 NP="${NP:-$(cfg "run.default_np")}"
 RUN_ARGS=$(cfg "run.args")
-PROFILING_ARGS=$(cfg "run.profiling_args" 2>/dev/null || echo "")
 GPROF_FLAGS=$(cfg "profiling.gprof_flags")
 LANGUAGE=$(cfg "language")
 
@@ -175,45 +174,28 @@ for fix in fixes:
     }
 
     # --- Build gprof version ---
-    # Check if this app uses its own profile flag (e.g., XSBench: PROFILE=yes)
-    local profile_make_args
-    profile_make_args=$(cfg "profiling.profile_make_args" 2>/dev/null || echo "")
+    log "  Building gprof version ($GPROF_FLAGS)..."
+    make -f "$makefile" clean >/dev/null 2>&1 || true
+    cp "$makefile" "${makefile}.gprof"
 
-    if [ -n "$profile_make_args" ]; then
-        # App has its own profiling mechanism (e.g., XSBench PROFILE=yes)
-        log "  Building gprof version (using: $profile_make_args)..."
-        make -f "$makefile" clean >/dev/null 2>&1 || true
-        eval make -f "$makefile" $compiler_args $profile_make_args \
-            > "$REPORT_DIR/build_gprof_${TIMESTAMP}.log" 2>&1 || {
-            err "gprof version build failed"
-            tail -30 "$REPORT_DIR/build_gprof_${TIMESTAMP}.log"
-            exit 1
-        }
+    if [ "$LANGUAGE" = "fortran" ]; then
+        sed -i "s/^FFLAGS *=/& $GPROF_FLAGS /" "${makefile}.gprof"
     else
-        # Fallback: inject -pg via sed (original method, works for miniGhost etc.)
-        log "  Building gprof version ($GPROF_FLAGS)..."
-        make -f "$makefile" clean >/dev/null 2>&1 || true
-        cp "$makefile" "${makefile}.gprof"
-
-        if [ "$LANGUAGE" = "fortran" ]; then
-            sed -i "s/^FFLAGS *=/& $GPROF_FLAGS /" "${makefile}.gprof"
-        else
-            sed -i "s/^CFLAGS *=/& $GPROF_FLAGS /" "${makefile}.gprof"
-            sed -i "s/^CXXFLAGS *=/& $GPROF_FLAGS /" "${makefile}.gprof" 2>/dev/null || true
-        fi
-        echo "LDFLAGS += $GPROF_FLAGS" >> "${makefile}.gprof"
-
-        eval make -f "${makefile}.gprof" $compiler_args \
-            > "$REPORT_DIR/build_gprof_${TIMESTAMP}.log" 2>&1 || {
-            err "gprof version build failed"
-            tail -30 "$REPORT_DIR/build_gprof_${TIMESTAMP}.log"
-            exit 1
-        }
-        rm -f "${makefile}.gprof"
+        sed -i "s/^CFLAGS *=/& $GPROF_FLAGS /" "${makefile}.gprof"
+        sed -i "s/^CXXFLAGS *=/& $GPROF_FLAGS /" "${makefile}.gprof" 2>/dev/null || true
     fi
+    echo "LDFLAGS += $GPROF_FLAGS" >> "${makefile}.gprof"
+
+    eval make -f "${makefile}.gprof" $compiler_args \
+        > "$REPORT_DIR/build_gprof_${TIMESTAMP}.log" 2>&1 || {
+        err "gprof version build failed"
+        tail -30 "$REPORT_DIR/build_gprof_${TIMESTAMP}.log"
+        exit 1
+    }
 
     cp "$BINARY_NAME" "$BUILD_DIR/${APP_NAME}_gprof.x" 2>/dev/null || \
     cp "$BINARY_NAME" "$BUILD_DIR/${APP_NAME}_gprof" 2>/dev/null || true
+    rm -f "${makefile}.gprof"
 
     log "  Build complete ✓"
     ls -lh "$BUILD_DIR"/${APP_NAME}_* 2>/dev/null || true
