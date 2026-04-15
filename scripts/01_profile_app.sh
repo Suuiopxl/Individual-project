@@ -247,6 +247,9 @@ build_with_cmake() {
     [ -n "$cxx" ] && compiler_defs="$compiler_defs -DCMAKE_CXX_COMPILER=$cxx"
 
     local app_src="$PROJECT_ROOT/apps/$APP_NAME"
+    local cmake_subdir
+    cmake_subdir=$(cfg "build.cmake_source_subdir" 2>/dev/null || echo "")
+    [ -n "$cmake_subdir" ] && app_src="$app_src/$cmake_subdir"
     eval cmake "$app_src" $cmake_args $compiler_defs \
         > "$REPORT_DIR/build_normal_${TIMESTAMP}.log" 2>&1 || {
         err "CMake configure failed"
@@ -293,6 +296,13 @@ phase1_baseline() {
     log "Phase 1: Baseline Benchmarking (${BASELINE_RUNS} runs)"
 
     cd "$BUILD_DIR"
+
+    # For LAMMPS: copy input file from source to build dir
+    local app_root="$PROJECT_ROOT/apps/$APP_NAME"
+    if [ -f "$app_root/bench/in.lj" ]; then
+        mkdir -p "$BUILD_DIR/bench"
+        cp "$app_root/bench/in.lj" "$BUILD_DIR/bench/"
+    fi
     local times=()
     local baseline_log="$REPORT_DIR/baseline_${TIMESTAMP}.log"
 
@@ -364,6 +374,13 @@ phase2_gprof() {
     log "Phase 2: gprof Performance Analysis"
 
     cd "$BUILD_DIR"
+
+    # For LAMMPS: copy input file from source to build dir
+    local app_root="$PROJECT_ROOT/apps/$APP_NAME"
+    if [ -f "$app_root/bench/in.lj" ]; then
+        mkdir -p "$BUILD_DIR/bench"
+        cp "$app_root/bench/in.lj" "$BUILD_DIR/bench/"
+    fi
     rm -f gmon.out
 
     local gprof_bin
