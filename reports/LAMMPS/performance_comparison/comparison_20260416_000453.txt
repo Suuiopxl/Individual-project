@@ -1,0 +1,144 @@
+========================================================
+  LAMMPS LJ Force — CPU vs CUDA GPU Performance Comparison
+  Date: Thu Apr 16 00:04:55 BST 2026
+  CPU: 13th Gen Intel(R) Core(TM) i9-13900HK
+  GPU: NVIDIA GeForce RTX 4080 Laptop GPU (12282 MiB)
+  CUDA: 13.1
+  Benchmark: LJ pair force (pair_lj_cut), FCC lattice, density=0.8442
+  Cutoff: 2.5 sigma, skin=0.3, steps=100
+  Strategy: 1 thread/atom, full neighbor list (no Newton 3rd law)
+  Data layout: AoS→SoA conversion for coalesced GPU memory access
+========================================================
+
+========================================================
+  LAMMPS LJ Force — CPU vs CUDA GPU Benchmark
+========================================================
+  Grid:     20 x 20 x 20 FCC
+  Atoms:    32000
+  Cutoff:   2.5 (skin=0.3)
+  Steps:    100 (warmup: 5)
+  GPU:      NVIDIA GeForce RTX 4080 Laptop GPU (SM 8.9, 58 SMs)
+========================================================
+
+[1/6] Generating FCC lattice...
+  Box: 33.5919 x 33.5919 x 33.5919
+[2/6] Building full neighbor list (no Newton 3rd law)...
+  Neighbors: 2496086 total, 78.0 avg/atom
+  Build time: 95.2 ms
+[3/6] CPU baseline (100 iterations)...
+  CPU time:   9.71 ms/step (total 970.8 ms)
+  CPU PE:     -188056.657750
+[4/6] GPU CUDA kernel...
+  GPU total:  0.45 ms/step (incl. memset overhead)
+  GPU kernel: 0.357 ms (median), 0.356 ms (min), 0.414 ms (max)
+  Round-trip: H2D=2.230 + Kern=0.354 + D2H=0.867 = 3.452 ms
+  GPU PE:     -188056.657750
+
+[5/6] Validating correctness...
+  Force max abs error: 2.220446e-14
+  Force max rel error: 1.203333e-09
+  PE error (abs/rel):  1.717126e-09 / 9.130897e-15
+  Atoms with rel err > 1e-6: 0 / 96000
+  Validation: PASS
+
+[6/6] Performance Summary
+========================================================
+  Config                       ms/step    Pairs/s    Speedup
+  ------------------------- ---------- ---------- ----------
+  CPU (1 thread)                 9.708   2.57e+08       1.0x
+  GPU (kernel only)              0.357   6.98e+09       27.2x
+  GPU (full round-trip)          3.452   7.23e+08        2.8x
+========================================================
+
+========================================================
+  LAMMPS LJ Force — CPU vs CUDA GPU Benchmark
+========================================================
+  Grid:     30 x 30 x 30 FCC
+  Atoms:    108000
+  Cutoff:   2.5 (skin=0.3)
+  Steps:    100 (warmup: 5)
+  GPU:      NVIDIA GeForce RTX 4080 Laptop GPU (SM 8.9, 58 SMs)
+========================================================
+
+[1/6] Generating FCC lattice...
+  Box: 50.3879 x 50.3879 x 50.3879
+[2/6] Building full neighbor list (no Newton 3rd law)...
+  Neighbors: 8424176 total, 78.0 avg/atom
+  Build time: 321.4 ms
+[3/6] CPU baseline (100 iterations)...
+  CPU time:   29.20 ms/step (total 2920.4 ms)
+  CPU PE:     -648769.599318
+[4/6] GPU CUDA kernel...
+  GPU total:  0.93 ms/step (incl. memset overhead)
+  GPU kernel: 0.933 ms (median), 0.931 ms (min), 0.983 ms (max)
+  Round-trip: H2D=5.218 + Kern=0.928 + D2H=1.559 = 7.706 ms
+  GPU PE:     -648769.599318
+
+[5/6] Validating correctness...
+  Force max abs error: 2.042810e-14
+  Force max rel error: 5.412243e-10
+  PE error (abs/rel):  2.095476e-09 / 3.229923e-15
+  Atoms with rel err > 1e-6: 0 / 324000
+  Validation: PASS
+
+[6/6] Performance Summary
+========================================================
+  Config                       ms/step    Pairs/s    Speedup
+  ------------------------- ---------- ---------- ----------
+  CPU (1 thread)                29.204   2.88e+08       1.0x
+  GPU (kernel only)              0.933   9.03e+09       31.3x
+  GPU (full round-trip)          7.706   1.09e+09        3.8x
+========================================================
+
+========================================================
+  LAMMPS LJ Force — CPU vs CUDA GPU Benchmark
+========================================================
+  Grid:     40 x 40 x 40 FCC
+  Atoms:    256000
+  Cutoff:   2.5 (skin=0.3)
+  Steps:    100 (warmup: 5)
+  GPU:      NVIDIA GeForce RTX 4080 Laptop GPU (SM 8.9, 58 SMs)
+========================================================
+
+[1/6] Generating FCC lattice...
+  Box: 67.1838 x 67.1838 x 67.1838
+[2/6] Building full neighbor list (no Newton 3rd law)...
+  Neighbors: 19968474 total, 78.0 avg/atom
+  Build time: 714.3 ms
+[3/6] CPU baseline (100 iterations)...
+  CPU time:   70.52 ms/step (total 7052.2 ms)
+  CPU PE:     -1554607.016812
+[4/6] GPU CUDA kernel...
+  GPU total:  2.04 ms/step (incl. memset overhead)
+  GPU kernel: 2.098 ms (median), 2.093 ms (min), 2.135 ms (max)
+  Round-trip: H2D=10.161 + Kern=2.101 + D2H=4.401 = 16.663 ms
+  GPU PE:     -1554607.016812
+
+[5/6] Validating correctness...
+  Force max abs error: 2.398082e-14
+  Force max rel error: 1.318135e-09
+  PE error (abs/rel):  5.355105e-09 / 3.444668e-15
+  Atoms with rel err > 1e-6: 0 / 768000
+  Validation: PASS
+
+[6/6] Performance Summary
+========================================================
+  Config                       ms/step    Pairs/s    Speedup
+  ------------------------- ---------- ---------- ----------
+  CPU (1 thread)                70.522   2.83e+08       1.0x
+  GPU (kernel only)              2.098   9.52e+09       33.6x
+  GPU (full round-trip)         16.663   1.20e+09        4.2x
+========================================================
+
+========================================================
+  ANALYSIS NOTES
+========================================================
+- "GPU (kernel only)" is pure force computation on GPU
+- "GPU (full round-trip)" includes cudaMalloc + H2D + kernel + D2H
+- CPU baseline is single-threaded (no OpenMP)
+- In production MD, data stays on GPU across timesteps
+  → effective speedup approaches kernel-only number
+- Full neighbor list (no Newton 3rd law) doubles pair count
+  but eliminates atomicAdd race conditions on GPU
+- Validation uses max relative error < 1e-4 threshold
+========================================================
