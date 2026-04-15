@@ -1,0 +1,13 @@
+==============================
+LAMMPS Baseline Summary
+==============================
+Date:       Wed Apr 15 23:18:27 BST 2026
+Language:   cpp
+MPI:        true (ranks: 1)
+Runs:       3
+Args:       -in bench/in.lj
+Wall-clock times (ms): 1270 1215 1202
+Average:  1229 ms
+Min:      1202 ms
+Max:      1270 ms
+==============================

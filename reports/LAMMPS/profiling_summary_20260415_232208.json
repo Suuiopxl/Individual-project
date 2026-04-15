@@ -1,0 +1,111 @@
+{
+  "application": "LAMMPS",
+  "language": "cpp",
+  "timestamp": "20260415_232208",
+  "config": {
+    "mpi_ranks": 1,
+    "problem_args": "-in bench/in.lj",
+    "baseline_runs": 3,
+    "build_system": "cmake"
+  },
+  "gprof_hotspots": [
+    {
+      "pct_time": "time",
+      "cumulative_sec": "seconds",
+      "self_sec": "seconds",
+      "calls": "calls",
+      "function": "name"
+    },
+    {
+      "pct_time": "78.65",
+      "cumulative_sec": "0.70",
+      "self_sec": "0.70",
+      "calls": "101",
+      "function": "LAMMPS_NS::PairLJCut::compute(int,"
+    },
+    {
+      "pct_time": "16.85",
+      "cumulative_sec": "0.85",
+      "self_sec": "0.15",
+      "calls": "6",
+      "function": "LAMMPS_NS::NPairBin<1,"
+    },
+    {
+      "pct_time": "2.25",
+      "cumulative_sec": "0.87",
+      "self_sec": "0.02",
+      "calls": "570",
+      "function": "LAMMPS_NS::AtomVec::pack_comm(int,"
+    },
+    {
+      "pct_time": "1.12",
+      "cumulative_sec": "0.88",
+      "self_sec": "0.01",
+      "calls": "1745397",
+      "function": "LAMMPS_NS::Pair::ev_tally(int,"
+    },
+    {
+      "pct_time": "1.12",
+      "cumulative_sec": "0.89",
+      "self_sec": "0.01",
+      "calls": "6",
+      "function": "LAMMPS_NS::CommBrick::exchange()"
+    },
+    {
+      "pct_time": "0.00",
+      "cumulative_sec": "0.89",
+      "self_sec": "0.00",
+      "calls": "310688",
+      "function": "LAMMPS_NS::NBin::coord2bin(double*)"
+    },
+    {
+      "pct_time": "0.00",
+      "cumulative_sec": "0.89",
+      "self_sec": "0.00",
+      "calls": "256000",
+      "function": "LAMMPS_NS::RanPark::uniform()"
+    },
+    {
+      "pct_time": "0.00",
+      "cumulative_sec": "0.89",
+      "self_sec": "0.00",
+      "calls": "97344",
+      "function": "LAMMPS_NS::Lattice::lattice2box(double&,"
+    },
+    {
+      "pct_time": "0.00",
+      "cumulative_sec": "0.89",
+      "self_sec": "0.00",
+      "calls": "32000",
+      "function": "LAMMPS_NS::AtomVec::create_atom(int,"
+    }
+  ],
+  "lammps_timer": {
+    "Pair": {
+      "time_sec": 0.718,
+      "pct": 79.53
+    },
+    "Neigh": {
+      "time_sec": 0.152,
+      "pct": 16.79
+    },
+    "Comm": {
+      "time_sec": 0.011,
+      "pct": 1.23
+    },
+    "Output": {
+      "time_sec": 0.0,
+      "pct": 0.01
+    },
+    "Modify": {
+      "time_sec": 0.018,
+      "pct": 2.0
+    },
+    "Other": {
+      "time_sec": 0.004,
+      "pct": 0.43
+    }
+  },
+  "source_dir": "apps/LAMMPS/src",
+  "next_step": "Run 02_analyze_hotspots.py LAMMPS to feed hotspot functions to LLM"
+}

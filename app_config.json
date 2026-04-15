@@ -177,13 +177,15 @@
         "cmake",
         "libfftw3-dev"
       ],
-      "pre_build_fixes": []
+      "pre_build_fixes": [],
+      "cmake_source_subdir": "cmake"
     },
     "run": {
       "requires_mpi": true,
-      "default_np": 4,
+      "default_np": 1,
       "args": "-in bench/in.lj",
-      "baseline_runs": 3
+      "baseline_runs": 3,
+      "_note": "np=1 for profiling. Use NP=4 env var for baseline."
     },
     "profiling": {
       "gprof_flags": "-pg",
@@ -193,7 +195,9 @@
         "neighbor_build",
         "comm_forward",
         "fix_enforce2d"
-      ]
+      ],
+      "strategy": "lammps_timer + callgrind",
+      "_note": "LAMMPS built-in timer gives Pair/Neigh/Comm breakdown. Callgrind for function-level."
     },
     "gpu_patch": {
       "strategy": "cuda",
