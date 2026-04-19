@@ -141,9 +141,11 @@ python3 scripts/02_analyze_hotspots.py miniGhost
 python3 scripts/02_analyze_hotspots.py XSBench
 python3 scripts/02_analyze_hotspots.py miniFE
 python3 scripts/02_analyze_hotspots.py LAMMPS
+python3 scripts/02b_generate_cuda.py applicationName
 ```
 
 This extracts hotspot function source code, constructs a detailed prompt with profiling data, calls the LLM API, and saves the analysis to `reports/<app>/llm_analysis_<timestamp>.md`. The prompt is also saved for reproducibility.
+The 02b script implements the multi-turn dialogue phase of the LLM agent. Seeds each session with the most recent feasibility report as the first assistant message, then runs a REPL where each turn is immediately persisted to reports/<app>/session_*.md.
 
 ### Step 3: GPU Transformation
 
