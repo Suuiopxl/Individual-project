@@ -31,6 +31,7 @@
       "baseline_runs": 3
     },
     "profiling": {
+      "tool": "gprof",
       "gprof_flags": "-pg",
       "top_n": 10,
       "hotspot_keywords": [
@@ -80,6 +81,7 @@
       "_note": "-t 1 single-thread for gprof; -s large + high lookups to wash out init phase"
     },
     "profiling": {
+      "tool": "gprof",
       "gprof_flags": "-pg",
       "profile_make_args": "PROFILE=yes",
       "top_n": 10,
@@ -131,6 +133,7 @@
       "_note": "Single MPI rank for profiling; increase nx/ny/nz for longer runtime"
     },
     "profiling": {
+      "tool": "callgrind",
       "gprof_flags": "-pg",
       "top_n": 10,
       "hotspot_keywords": [
@@ -188,6 +191,7 @@
       "_note": "np=1 for profiling. Use NP=4 env var for baseline."
     },
     "profiling": {
+      "tool": "gprof",
       "gprof_flags": "-pg",
       "top_n": 10,
       "hotspot_keywords": [

@@ -84,6 +84,17 @@ log "  Build system: $BUILD_SYSTEM | Language: $LANGUAGE"
 log "  Source: $SRC_DIR"
 log "  MPI: $REQUIRES_MPI (np=$NP) | Args: $RUN_ARGS"
 
+# ======================== Profiler dispatch ========================
+# Different applications may require different profilers. Where gprof is not
+# suitable (see the methodology chapter of the report for the miniFE pivot),
+# the "profiling.tool" field in app_config.json selects an alternative. When
+# absent, the default is gprof and the rest of this script is used unchanged.
+PROFILING_TOOL=$(cfg "profiling.tool" 2>/dev/null || echo "gprof")
+if [ "$PROFILING_TOOL" = "callgrind" ]; then
+    log "Dispatching to Callgrind-based profiler (profiling.tool=callgrind)"
+    exec bash "$SCRIPT_DIR/profile_miniFE_perf.sh"
+fi
+
 # ======================== Phase 0: Build ========================
 phase0_build() {
     log "Phase 0: Build $APP_NAME"
