@@ -392,7 +392,11 @@ phase2_gprof() {
         mkdir -p "$BUILD_DIR/bench"
         cp "$app_root/bench/in.lj" "$BUILD_DIR/bench/"
     fi
-    rm -f gmon.out
+    # === gmon.out lookup hardened ===
+    # Remove any pre-existing gmon.out anywhere under BUILD_DIR so we
+    # only see the fresh one after this run. CMake/MPI builds (LAMMPS)
+    # may write gmon.out into a subdirectory rather than $BUILD_DIR.
+    find "$BUILD_DIR" -name "gmon.out" -delete 2>/dev/null || true
 
     local gprof_bin
     gprof_bin=$(find "$BUILD_DIR" -name "${APP_NAME}_gprof*" -type f | head -1)
@@ -412,12 +416,23 @@ phase2_gprof() {
             > "$REPORT_DIR/gprof_run_${TIMESTAMP}.log" 2>&1
     fi
 
-    if [ ! -f gmon.out ]; then
-        warn "gmon.out not generated, skipping gprof analysis."
+    # Locate gmon.out anywhere under BUILD_DIR, newest first.
+    local gmon_file
+    gmon_file=$(find "$BUILD_DIR" -name "gmon.out" -printf "%T@ %p\n" 2>/dev/null \
+                | sort -nr | head -1 | cut -d" " -f2-)
+    if [ -z "$gmon_file" ] || [ ! -f "$gmon_file" ]; then
+        warn "gmon.out not generated under $BUILD_DIR, skipping gprof analysis."
+        warn "  Run log:     $REPORT_DIR/gprof_run_${TIMESTAMP}.log"
+        warn "  Run log tail:"
+        tail -5 "$REPORT_DIR/gprof_run_${TIMESTAMP}.log" 2>/dev/null | sed "s/^/    /" >&2
         return
     fi
+    log "  Found gmon.out at $gmon_file"
 
-    gprof "$gprof_bin" gmon.out \
+    # gprof needs to resolve the binary against the profile file, and
+    # expects to be run in the same directory as gmon.out.
+    ( cd "$(dirname "$gmon_file")" && \
+      gprof "$gprof_bin" "$(basename "$gmon_file")" ) \
         > "$REPORT_DIR/gprof_full_${TIMESTAMP}.txt" 2>&1
 
     # Extract flat profile Top-N
