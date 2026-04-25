@@ -56,15 +56,12 @@ void generate_fcc_lattice(int nx, int ny, int nz,
                           std::vector<double> &x_aos,
                           double box[3])
 {
-    // Lattice constant for FCC at given density
-    // 4 atoms per unit cell, density = 4 / a^3
     double a = pow(4.0 / density, 1.0 / 3.0);
 
     box[0] = nx * a;
     box[1] = ny * a;
     box[2] = nz * a;
 
-    // FCC basis: (0,0,0), (0.5,0.5,0), (0.5,0,0.5), (0,0.5,0.5)
     double basis[4][3] = {
         {0.0, 0.0, 0.0},
         {0.5, 0.5, 0.0},
@@ -92,12 +89,10 @@ void generate_fcc_lattice(int nx, int ny, int nz,
 
 // ============================================================
 // Add thermal velocity perturbation to positions
-// (simulates a few MD steps so atoms are off-lattice)
 // ============================================================
 void perturb_positions(std::vector<double> &x_aos, int natoms,
                        double box[3], double temperature)
 {
-    // Simple random displacement scaled by temperature
     srand(87287);  // same seed as LAMMPS bench/in.lj
     double disp_scale = 0.05 * pow(4.0 / FCC_DENSITY, 1.0 / 3.0);
 
@@ -105,7 +100,6 @@ void perturb_positions(std::vector<double> &x_aos, int natoms,
         for (int d = 0; d < 3; d++) {
             double r = (double)rand() / RAND_MAX - 0.5;
             x_aos[i * 3 + d] += r * disp_scale;
-            // Periodic wrap
             if (x_aos[i * 3 + d] < 0)      x_aos[i * 3 + d] += box[d];
             if (x_aos[i * 3 + d] >= box[d]) x_aos[i * 3 + d] -= box[d];
         }
@@ -114,13 +108,12 @@ void perturb_positions(std::vector<double> &x_aos, int natoms,
 
 // ============================================================
 // Build full neighbor list (no Newton's 3rd law)
-// Uses cell list for O(N) construction
 // ============================================================
 struct NeighList {
     std::vector<int> ilist;
     std::vector<int> numneigh;
-    std::vector<int> neighbors;    // flattened
-    std::vector<int> neigh_offset; // offset into neighbors for each atom
+    std::vector<int> neighbors;
+    std::vector<int> neigh_offset;
     int inum;
     int total_neighs;
 };
@@ -131,7 +124,6 @@ void build_neighbor_list(const std::vector<double> &x_aos, int natoms,
 {
     double cutsq = (cutoff + skin) * (cutoff + skin);
 
-    // Cell list construction
     double cellsize = cutoff + skin;
     int ncx = std::max(1, (int)(box[0] / cellsize));
     int ncy = std::max(1, (int)(box[1] / cellsize));
@@ -142,7 +134,6 @@ void build_neighbor_list(const std::vector<double> &x_aos, int natoms,
     double cy = box[1] / ncy;
     double cz = box[2] / ncz;
 
-    // Assign atoms to cells
     std::vector<std::vector<int>> cells(ncells);
     for (int i = 0; i < natoms; i++) {
         int ix = (int)(x_aos[i * 3 + 0] / cx);
@@ -154,7 +145,6 @@ void build_neighbor_list(const std::vector<double> &x_aos, int natoms,
         cells[iz * ncy * ncx + iy * ncx + ix].push_back(i);
     }
 
-    // Build neighbor list
     nlist.ilist.resize(natoms);
     nlist.numneigh.resize(natoms, 0);
     nlist.neigh_offset.resize(natoms);
@@ -170,7 +160,6 @@ void build_neighbor_list(const std::vector<double> &x_aos, int natoms,
         int ciy = (int)(yi / cy); ciy = std::min(ciy, ncy - 1);
         int ciz = (int)(zi / cz); ciz = std::min(ciz, ncz - 1);
 
-        // Search 27 neighboring cells
         for (int dz = -1; dz <= 1; dz++) {
             for (int dy = -1; dy <= 1; dy++) {
                 for (int dx = -1; dx <= 1; dx++) {
@@ -186,7 +175,6 @@ void build_neighbor_list(const std::vector<double> &x_aos, int natoms,
                         double dely = yi - x_aos[j * 3 + 1];
                         double delz = zi - x_aos[j * 3 + 2];
 
-                        // Periodic boundary (minimum image)
                         if (delx >  0.5 * box[0]) delx -= box[0];
                         if (delx < -0.5 * box[0]) delx += box[0];
                         if (dely >  0.5 * box[1]) dely -= box[1];
@@ -204,7 +192,6 @@ void build_neighbor_list(const std::vector<double> &x_aos, int natoms,
         }
     }
 
-    // Flatten
     nlist.inum = natoms;
     nlist.total_neighs = 0;
     for (int i = 0; i < natoms; i++) {
@@ -225,7 +212,6 @@ void build_neighbor_list(const std::vector<double> &x_aos, int natoms,
 
 // ============================================================
 // CPU reference LJ force computation (no Newton 3rd law)
-// Matches the GPU kernel logic exactly
 // ============================================================
 void cpu_lj_force(const std::vector<double> &x_aos, int natoms,
                   const int *ilist, const int *numneigh,
@@ -285,8 +271,7 @@ void cpu_lj_force(const std::vector<double> &x_aos, int natoms,
 // ============================================================
 int main(int argc, char **argv)
 {
-    // Parse args
-    int ndim = 20;  // default: 20^3 * 4 = 32000 atoms (matches bench/in.lj)
+    int ndim = 20;
     if (argc > 1) ndim = atoi(argv[1]);
 
     int natoms = 4 * ndim * ndim * ndim;
@@ -299,7 +284,6 @@ int main(int argc, char **argv)
     printf("  Cutoff:   %.1f (skin=0.3)\n", LJ_CUTOFF);
     printf("  Steps:    %d (warmup: %d)\n", NSTEPS, WARMUP);
 
-    // Print GPU info
     cudaDeviceProp prop;
     CUDA_CHECK(cudaGetDeviceProperties(&prop, 0));
     printf("  GPU:      %s (SM %d.%d, %d SMs)\n",
@@ -314,11 +298,9 @@ int main(int argc, char **argv)
     perturb_positions(x_aos, natoms, box, 1.44);
     printf("  Box: %.4f x %.4f x %.4f\n", box[0], box[1], box[2]);
 
-    // Atom types: all type 1 (single component LJ)
     std::vector<int> type(natoms, 1);
 
     // ---- LJ parameters ----
-    // LAMMPS convention: 1-indexed, ntypes=1, arrays are (ntypes+1)^2
     int ntypes = 1;
     int np1 = ntypes + 1;
     int np1sq = np1 * np1;
@@ -327,9 +309,8 @@ int main(int argc, char **argv)
     std::vector<double> lj1(np1sq, 0.0), lj2(np1sq, 0.0);
     std::vector<double> lj3(np1sq, 0.0), lj4(np1sq, 0.0);
     std::vector<double> offset_arr(np1sq, 0.0);
-    double special_lj[4] = {1.0, 0.0, 0.0, 0.0};  // default: no special bonds
+    double special_lj[4] = {1.0, 0.0, 0.0, 0.0};
 
-    // Set params for type pair (1,1)
     double sigma6  = pow(LJ_SIGMA, 6.0);
     double sigma12 = sigma6 * sigma6;
     cutsq[1 * np1 + 1]  = LJ_CUTOFF * LJ_CUTOFF;
@@ -338,7 +319,6 @@ int main(int argc, char **argv)
     lj3[1 * np1 + 1]    = 4.0  * LJ_EPSILON * sigma12;
     lj4[1 * np1 + 1]    = 4.0  * LJ_EPSILON * sigma6;
 
-    // Energy offset at cutoff
     double r2inv_c = 1.0 / (LJ_CUTOFF * LJ_CUTOFF);
     double r6inv_c = r2inv_c * r2inv_c * r2inv_c;
     offset_arr[1 * np1 + 1] = r6inv_c * (lj3[1 * np1 + 1] * r6inv_c - lj4[1 * np1 + 1]);
@@ -388,11 +368,9 @@ int main(int argc, char **argv)
     // ---- GPU ----
     printf("[4/6] GPU CUDA kernel...\n");
 
-    // Allocate
     LJForceGPU gpu;
     lj_gpu_allocate(gpu, natoms, natoms, nlist.inum, ntypes, nlist.total_neighs);
 
-    // Upload (once for benchmark — in real MD, upload each step)
     lj_gpu_upload(gpu, x_aos.data(), type.data(),
                   nlist.ilist.data(), nlist.numneigh.data(),
                   nlist.neighbors.data(), nlist.neigh_offset.data(),
@@ -410,7 +388,7 @@ int main(int argc, char **argv)
         CUDA_CHECK(cudaDeviceSynchronize());
     }
 
-    // Benchmark: kernel only (data already on GPU)
+    // Benchmark: kernel only
     float kern_times[NSTEPS];
     timer.start();
     for (int step = 0; step < NSTEPS; step++) {
@@ -432,7 +410,6 @@ int main(int argc, char **argv)
     }
     double gpu_total_ms = timer.stop_ms();
 
-    // Sort kernel times and take median
     std::sort(kern_times, kern_times + NSTEPS);
     float kern_median = kern_times[NSTEPS / 2];
     float kern_min    = kern_times[0];
@@ -443,7 +420,7 @@ int main(int argc, char **argv)
     printf("  GPU kernel: %.3f ms (median), %.3f ms (min), %.3f ms (max)\n",
            kern_median, kern_min, kern_max);
 
-    // Benchmark: full round-trip (upload + kernel + download)
+    // Benchmark: full round-trip
     float h2d_ms, kernel_ms, d2h_ms;
     CUDA_CHECK(cudaMemset(gpu.d_pe_result, 0, sizeof(double)));
     lj_gpu_upload(gpu, x_aos.data(), type.data(),
@@ -513,7 +490,6 @@ int main(int argc, char **argv)
            cpu_per_step / total_roundtrip);
     printf("========================================================\n");
 
-    // Cleanup
     lj_gpu_free(gpu);
 
     return pass ? 0 : 1;
