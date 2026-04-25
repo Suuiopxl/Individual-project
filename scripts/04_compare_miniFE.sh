@@ -4,11 +4,16 @@ set -uo pipefail
 ###############################################################################
 # 04_compare_miniFE.sh - miniFE CPU vs LLM-CUDA vs Official-CUDA
 #
-# Sweeps 7 grid sizes (50..200 cubes) using:
-#   - apps/miniFE_gpu/cuda_manual/miniFE_cuda_bench  (runs CPU + LLM-CUDA in one go)
-#   - apps/miniFE/cuda/src/miniFE.x                  (official CUDA, optional)
-# CPU baseline is the OpenMP CG inside the cuda_manual binary.
-# nsys breakdown on the largest size for both GPU versions.
+# Sweeps 7 grid sizes (50..200 cubes); nsys breakdown for every size.
+#
+# Patches the upstream Mantevo miniFE/cuda for CUDA 13 / NVHPC 26.1
+# (idempotent and safe to re-run):
+#   - sm_35 -> sm_89
+#   - MPI include path injected into NVCCFLAGS (nvcc itself needs to find mpi.h)
+#   - <nvToolsExt.h>      -> <nvtx3/nvToolsExt.h>   (header relocation in CUDA 13)
+#   - cudaThreadSetCacheConfig -> cudaDeviceSetCacheConfig (CUDA 13 removal)
+#   - drop -l nvToolsExt from LIBS (nvtx3 is header-only)
+#   - drop -lnsl, -lutil (legacy libraries no longer in modern glibc)
 ###############################################################################
 
 GREEN='\033[1;32m'; CYAN='\033[1;36m'; YELLOW='\033[1;33m'; NC='\033[0m'
@@ -30,7 +35,7 @@ mkdir -p "$REPORT_DIR"
 
 SIZES=(50 75 100 128 150 175 200)
 
-command -v nvcc >/dev/null  || { echo "[ERROR] nvcc not found"; exit 1; }
+command -v nvcc   >/dev/null || { echo "[ERROR] nvcc not found"; exit 1; }
 command -v mpicxx >/dev/null || { echo "[ERROR] mpicxx not found"; exit 1; }
 
 # ---------- nsys parser
@@ -44,11 +49,11 @@ parse_nsys_log() {
             v=$2; gsub(",","",v)
             if (v ~ /^[0-9]+(\.[0-9]+)?$/) kern_total += v
         }
-        mode == "mem" && in_data && NF >= 3 && $0 ~ /HtoD/ {
+        mode == "mem" && in_data && NF >= 3 && ($0 ~ /HtoD/ || $0 ~ /Host-to-Device/) {
             v=$2; gsub(",","",v)
             if (v ~ /^[0-9]+(\.[0-9]+)?$/) h2d_total += v
         }
-        mode == "mem" && in_data && NF >= 3 && $0 ~ /DtoH/ {
+        mode == "mem" && in_data && NF >= 3 && ($0 ~ /DtoH/ || $0 ~ /Device-to-Host/) {
             v=$2; gsub(",","",v)
             if (v ~ /^[0-9]+(\.[0-9]+)?$/) d2h_total += v
         }
@@ -58,9 +63,8 @@ parse_nsys_log() {
 
 # ---------- Build LLM-CUDA bench ----------
 log "Building LLM-CUDA benchmark"
-[ -d "$LLM_DIR" ] || { echo "[ERROR] LLM dir missing: $LLM_DIR"; exit 1; }
+[ -d "$LLM_DIR" ] || { echo "[ERROR] LLM dir missing"; exit 1; }
 
-# get_common_files / generate_info_header (best-effort)
 if [ -f "$CPU_REF_SRC/get_common_files" ]; then
     (cd "$CPU_REF_SRC" && bash get_common_files >/dev/null 2>&1) || true
 fi
@@ -74,67 +78,105 @@ make 2>&1 | tail -3
 [ -f "$LLM_DIR/miniFE_cuda_bench" ] || { echo "[ERROR] LLM-CUDA build failed"; exit 1; }
 info "LLM-CUDA OK"
 
-# ---------- Build Official CUDA (defensive) ----------
-log "Building Official CUDA (apps/miniFE/cuda/src/)"
+# ---------- Build Official CUDA ----------
+log "Building Official CUDA"
 OFF_OK=0
 OFF_BIN=""
 if [ -d "$OFF_DIR" ]; then
     cd "$OFF_DIR"
-    # Generate common files
-    [ -f get_common_files ]   && bash get_common_files   >/dev/null 2>&1 || true
+    [ -f get_common_files ]     && bash get_common_files     >/dev/null 2>&1 || true
     [ -f generate_info_header ] && bash generate_info_header "nvcc" "-O3" "miniFE" "MINIFE" >/dev/null 2>&1 || true
 
-    # Patch arch from the historical compute_35 to compute_89; idempotent
+    # ---- Patch source files
+    [ -f nvtx_stub.h ] && rm -f nvtx_stub.h && info "Removed stale nvtx_stub.h"
+
+    for f in *.hpp *.cuh *.h *.cu *.cpp; do
+        [ -f "$f" ] || continue
+        sed -i 's|#include <nvToolsExt.h>|#include <nvtx3/nvToolsExt.h>|g' "$f"
+        sed -i 's|#include "nvtx_stub.h"|#include <nvtx3/nvToolsExt.h>|g' "$f"
+        sed -i 's|cudaThreadSetCacheConfig|cudaDeviceSetCacheConfig|g' "$f"
+    done
+    info "Source patches applied"
+
+    # ---- Patch Makefile
     if [ -f Makefile ]; then
         [ ! -f Makefile.orig ] && cp Makefile Makefile.orig
-        sed -i 's|arch=compute_35,code=\\"sm_35,compute_35\\"|arch=compute_89,code=\\"sm_89,compute_89\\"|g' Makefile
-        # Some Makefile.* files include further nvcc flags
-        for f in make_targets Makefile.config Makefile; do
-            [ -f "$f" ] && sed -i 's|sm_35|sm_89|g; s|compute_35|compute_89|g' "$f"
-        done
+
+        sed -i 's|sm_35|sm_89|g; s|compute_35|compute_89|g' Makefile
+
+        if ! grep -q "INJECTED_MPI_INC" Makefile; then
+            MPI_INC_FLAGS=$(mpicxx -show 2>/dev/null | grep -oE '\-I[^ ]+' | tr '\n' ' ')
+            [ -z "$MPI_INC_FLAGS" ] && MPI_INC_FLAGS="-I$(dirname "$(dirname "$(command -v mpicxx)")")/include"
+            info "MPI include: $MPI_INC_FLAGS"
+            sed -i "1i # INJECTED_MPI_INC=1\nNVCCFLAGS_EXTRA=$MPI_INC_FLAGS" Makefile
+            sed -i "s|^NVCCFLAGS=|NVCCFLAGS=\$(NVCCFLAGS_EXTRA) |" Makefile
+        fi
+
+        # Drop legacy libraries that aren't in modern glibc / nvtx3 is header-only
+        sed -i 's|-l[[:space:]]*nvToolsExt||g; s|-lnsl||g; s|-lutil||g' Makefile
     fi
 
-    # NVHPC's mpicxx is the simplest; export MPI_HOME to its parent
     MPI_HOME_DETECT=$(dirname "$(dirname "$(command -v mpicxx)")")
     export MPI_HOME="${MPI_HOME:-$MPI_HOME_DETECT}"
+    info "MPI_HOME=$MPI_HOME"
 
-    if make clean >/dev/null 2>&1 && make 2>/tmp/minife_off_build.log; then
+    if make clean >/dev/null 2>&1 && make MPI_HOME="$MPI_HOME" 2>/tmp/minife_off_build.log; then
         OFF_BIN=$(find "$OFF_DIR" -maxdepth 1 -type f \( -name "miniFE.x" -o -name "miniFE" \) -executable | head -1)
         if [ -n "$OFF_BIN" ] && [ -x "$OFF_BIN" ]; then
             OFF_OK=1
             info "Official CUDA OK ($OFF_BIN)"
         fi
     fi
-    [ "$OFF_OK" -eq 0 ] && warn "Official CUDA build failed. See /tmp/minife_off_build.log"
+    [ "$OFF_OK" -eq 0 ] && warn "Official CUDA build failed. Log: /tmp/minife_off_build.log"
 else
-    warn "Official CUDA dir missing: $OFF_DIR; skipping."
+    warn "Official CUDA dir missing: $OFF_DIR"
 fi
 
-# ---------- System info ----------
 GPU_NAME=$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -1 || echo "Unknown")
 CPU_NAME=$(lscpu 2>/dev/null | grep "Model name" | sed 's/.*: *//' || echo "Unknown")
 
-# ---------- Output extractors for cuda_manual binary ----------
-extract_llm_cpu_total()    { echo "$1" | grep -oE "\[CPU CG\] Timings:.*TOTAL=[0-9.]+s" | grep -oE "TOTAL=[0-9.]+" | tail -1 | cut -d= -f2; }
-extract_llm_gpu_total()    { echo "$1" | grep -oE "\[CUDA CG\] Timings:.*TOTAL=[0-9.]+s" | grep -oE "TOTAL=[0-9.]+" | tail -1 | cut -d= -f2; }
-extract_llm_gpu_matvec()   { echo "$1" | grep -oE "\[CUDA CG\] Timings: MATVEC=[0-9.]+" | grep -oE "MATVEC=[0-9.]+" | tail -1 | cut -d= -f2; }
-extract_llm_gpu_dot()      { echo "$1" | grep -oE "\[CUDA CG\] Timings:.*DOT=[0-9.]+"   | grep -oE "DOT=[0-9.]+"   | tail -1 | cut -d= -f2; }
-extract_llm_gpu_waxpby()   { echo "$1" | grep -oE "\[CUDA CG\] Timings:.*WAXPBY=[0-9.]+" | grep -oE "WAXPBY=[0-9.]+" | tail -1 | cut -d= -f2; }
-extract_llm_validation()   { echo "$1" | grep -oE "Max \|x_cpu - x_gpu\| = [0-9.eE+-]+" | tail -1 | awk '{print $NF}'; }
+# ---------- Output extractors ----------
+extract_llm_cpu_total()  { echo "$1" | grep -oE "\[CPU CG\] Timings:.*TOTAL=[0-9.]+s" | grep -oE "TOTAL=[0-9.]+" | tail -1 | cut -d= -f2; }
+extract_llm_gpu_total()  { echo "$1" | grep -oE "\[CUDA CG\] Timings:.*TOTAL=[0-9.]+s" | grep -oE "TOTAL=[0-9.]+" | tail -1 | cut -d= -f2; }
+extract_llm_gpu_matvec() { echo "$1" | grep -oE "\[CUDA CG\] Timings: MATVEC=[0-9.]+" | grep -oE "MATVEC=[0-9.]+" | tail -1 | cut -d= -f2; }
+extract_llm_gpu_dot()    { echo "$1" | grep -oE "\[CUDA CG\] Timings:.*DOT=[0-9.]+"   | grep -oE "DOT=[0-9.]+"   | tail -1 | cut -d= -f2; }
+extract_llm_gpu_waxpby() { echo "$1" | grep -oE "\[CUDA CG\] Timings:.*WAXPBY=[0-9.]+" | grep -oE "WAXPBY=[0-9.]+" | tail -1 | cut -d= -f2; }
+extract_llm_validation() { echo "$1" | grep -oE "Max \|x_cpu - x_gpu\| = [0-9.eE+-]+" | tail -1 | awk '{print $NF}'; }
 
-# Official miniFE writes a YAML doc with timing fields. Look for "Total CG Time".
 extract_off_total() {
-    # YAML snippet usually contains: "Total CG Time: X.YYY"
-    echo "$1" | grep -E "(Total CG Time|Total Program Time|CG Mflops):" | head -1 | awk -F': *' '{print $2}' | awk '{print $1}'
+    local val
+    val=$(echo "$1" | grep -E "^[[:space:]]*Total CG Time:" | head -1 | awk -F': *' '{print $2}' | awk '{print $1}')
+    [ -z "$val" ] && val=$(echo "$1" | grep -E "^[[:space:]]*Total Program Time:" | head -1 | awk -F': *' '{print $2}' | awk '{print $1}')
+    [ -z "$val" ] && val=$(grep -h "Total CG Time:" "$OFF_DIR"/miniFE.*.yaml 2>/dev/null | tail -1 | awk -F': *' '{print $2}' | awk '{print $1}')
+    echo "${val:-N/A}"
+}
+
+# ---------- nsys helper ----------
+run_nsys_with_mpi() {
+    local bin="$1"; shift
+    local args="$1"; shift
+    local logfile="$1"; shift
+    local rep="/tmp/nsys_fe_$$_$RANDOM"
+    nsys profile -t cuda --stats=true --force-overwrite=true \
+        -o "$rep" \
+        mpirun --oversubscribe --allow-run-as-root -np 1 \
+        $bin $args > "$logfile" 2>&1 || warn "nsys failed: $(basename "$logfile")"
+    rm -f "${rep}.nsys-rep" "${rep}.qdstrm" "${rep}.sqlite" 2>/dev/null
+    eval "$(parse_nsys_log "$logfile")"
+    : "${kern_ns:=0}" "${h2d_ns:=0}" "${d2h_ns:=0}"
+    awk -v k="$kern_ns" -v h="$h2d_ns" -v d="$d2h_ns" \
+        'BEGIN{printf "%.2f %.2f %.2f", k/1e6, h/1e6, d/1e6}'
 }
 
 # ---------- Run sweep ----------
-log "Running sweep (CPU runs are inside the bench binaries)"
-declare -A R_CPU_S R_LLM_S R_LLM_MV R_LLM_DOT R_LLM_WAX R_LLM_VAL R_OFF_S
+log "Running sweep"
+declare -A R_CPU_S R_LLM_S R_LLM_MV R_LLM_DOT R_LLM_WAX R_LLM_VAL R_OFF_S \
+           R_LLM_NS_KERN R_LLM_NS_H2D R_LLM_NS_D2H \
+           R_OFF_NS_KERN R_OFF_NS_H2D R_OFF_NS_D2H
+
 for N in "${SIZES[@]}"; do
     log "  Size ${N}^3"
 
-    # LLM bench (runs CPU + LLM-CUDA together)
     cd "$LLM_DIR"
     OMP_NUM_THREADS=$(nproc) \
         mpirun --oversubscribe --allow-run-as-root -np 1 \
@@ -147,55 +189,31 @@ for N in "${SIZES[@]}"; do
     R_LLM_DOT[$N]=$(extract_llm_gpu_dot    "$out")
     R_LLM_WAX[$N]=$(extract_llm_gpu_waxpby "$out")
     R_LLM_VAL[$N]=$(extract_llm_validation "$out")
-    info "    CPU CG total: ${R_CPU_S[$N]}s   LLM-CUDA total: ${R_LLM_S[$N]}s   max|x_cpu-x_gpu|=${R_LLM_VAL[$N]}"
+    info "    CPU CG: ${R_CPU_S[$N]}s  LLM-CUDA: ${R_LLM_S[$N]}s  max|err|=${R_LLM_VAL[$N]}"
 
-    # Official CUDA bench
+    NSYS_LOG="$REPORT_DIR/nsys_llm_${N}_${TS}.log"
+    cd "$LLM_DIR"
+    read -r km hm dm <<<"$(run_nsys_with_mpi ./miniFE_cuda_bench "-nx $N -ny $N -nz $N" "$NSYS_LOG")"
+    R_LLM_NS_KERN[$N]="$km"; R_LLM_NS_H2D[$N]="$hm"; R_LLM_NS_D2H[$N]="$dm"
+    info "    LLM nsys: kern=${km}ms H2D=${hm}ms D2H=${dm}ms"
+
     if [ "$OFF_OK" -eq 1 ]; then
         cd "$OFF_DIR"
         out=$(mpirun --oversubscribe --allow-run-as-root -np 1 \
               "$OFF_BIN" -nx $N -ny $N -nz $N 2>&1)
         echo "$out" > "$REPORT_DIR/official_run_${N}_${TS}.log"
         R_OFF_S[$N]=$(extract_off_total "$out")
-        [ -z "${R_OFF_S[$N]}" ] && R_OFF_S[$N]="N/A"
-        info "    Official CG total: ${R_OFF_S[$N]}"
+        info "    Official CG: ${R_OFF_S[$N]}"
+
+        NSYS_LOG="$REPORT_DIR/nsys_official_${N}_${TS}.log"
+        read -r km hm dm <<<"$(run_nsys_with_mpi "$OFF_BIN" "-nx $N -ny $N -nz $N" "$NSYS_LOG")"
+        R_OFF_NS_KERN[$N]="$km"; R_OFF_NS_H2D[$N]="$hm"; R_OFF_NS_D2H[$N]="$dm"
+        info "    Official nsys: kern=${km}ms H2D=${hm}ms D2H=${dm}ms"
     else
         R_OFF_S[$N]="N/A"
+        R_OFF_NS_KERN[$N]="N/A"; R_OFF_NS_H2D[$N]="N/A"; R_OFF_NS_D2H[$N]="N/A"
     fi
 done
-
-# ---------- nsys breakdown on largest size ----------
-NMAX="${SIZES[-1]}"
-log "nsys breakdown at ${NMAX}^3"
-
-LLM_NSYS_LOG="$REPORT_DIR/nsys_llm_${TS}.log"
-cd "$LLM_DIR"
-nsys profile -t cuda --stats=true --force-overwrite=true \
-    -o "/tmp/nsys_fe_llm_$$" \
-    mpirun --oversubscribe --allow-run-as-root -np 1 \
-    ./miniFE_cuda_bench -nx $NMAX -ny $NMAX -nz $NMAX \
-    > "$LLM_NSYS_LOG" 2>&1 || warn "nsys (LLM) failed"
-rm -f /tmp/nsys_fe_llm_$$.* 2>/dev/null
-eval "$(parse_nsys_log "$LLM_NSYS_LOG")"
-LLM_KERN_MS=$(awk "BEGIN{printf \"%.2f\", ${kern_ns:-0} / 1e6}")
-LLM_H2D_MS=$(awk "BEGIN{printf \"%.2f\", ${h2d_ns:-0} / 1e6}")
-LLM_D2H_MS=$(awk "BEGIN{printf \"%.2f\", ${d2h_ns:-0} / 1e6}")
-
-if [ "$OFF_OK" -eq 1 ]; then
-    OFF_NSYS_LOG="$REPORT_DIR/nsys_official_${TS}.log"
-    cd "$OFF_DIR"
-    nsys profile -t cuda --stats=true --force-overwrite=true \
-        -o "/tmp/nsys_fe_off_$$" \
-        mpirun --oversubscribe --allow-run-as-root -np 1 \
-        "$OFF_BIN" -nx $NMAX -ny $NMAX -nz $NMAX \
-        > "$OFF_NSYS_LOG" 2>&1 || warn "nsys (Official) failed"
-    rm -f /tmp/nsys_fe_off_$$.* 2>/dev/null
-    eval "$(parse_nsys_log "$OFF_NSYS_LOG")"
-    OFF_KERN_MS=$(awk "BEGIN{printf \"%.2f\", ${kern_ns:-0} / 1e6}")
-    OFF_H2D_MS=$(awk "BEGIN{printf \"%.2f\", ${h2d_ns:-0} / 1e6}")
-    OFF_D2H_MS=$(awk "BEGIN{printf \"%.2f\", ${d2h_ns:-0} / 1e6}")
-else
-    OFF_KERN_MS="N/A"; OFF_H2D_MS="N/A"; OFF_D2H_MS="N/A"
-fi
 
 # ---------- Write report ----------
 log "Writing report"
@@ -220,12 +238,17 @@ for N in "${SIZES[@]}"; do
 done
 echo ""
 echo "========================================================"
-echo "  GPU breakdown at ${NMAX}^3 (from nsys)"
+echo "  GPU breakdown per size (from nsys, ms)"
 echo "========================================================"
-printf "%-22s %12s %12s %12s\n" "Config" "Kernel(ms)" "H2D(ms)" "D2H(ms)"
-printf "%-22s %12s %12s %12s\n" "----------------------" "------------" "------------" "------------"
-printf "%-22s %12s %12s %12s\n" "LLM-CUDA"      "$LLM_KERN_MS" "$LLM_H2D_MS" "$LLM_D2H_MS"
-printf "%-22s %12s %12s %12s\n" "Official CUDA" "$OFF_KERN_MS" "$OFF_H2D_MS" "$OFF_D2H_MS"
+printf "%-8s %12s %12s %12s %12s %12s %12s\n" \
+    "Size" "LLM-Kern" "LLM-H2D" "LLM-D2H" "Off-Kern" "Off-H2D" "Off-D2H"
+printf "%-8s %12s %12s %12s %12s %12s %12s\n" \
+    "--------" "------------" "------------" "------------" "------------" "------------" "------------"
+for N in "${SIZES[@]}"; do
+    printf "%-8s %12s %12s %12s %12s %12s %12s\n" \
+        "${N}^3" "${R_LLM_NS_KERN[$N]}" "${R_LLM_NS_H2D[$N]}" "${R_LLM_NS_D2H[$N]}" \
+        "${R_OFF_NS_KERN[$N]}" "${R_OFF_NS_H2D[$N]}" "${R_OFF_NS_D2H[$N]}"
+done
 echo ""
 echo "Validation (max|x_cpu - x_gpu|, threshold 1e-6):"
 for N in "${SIZES[@]}"; do
@@ -236,15 +259,9 @@ echo "========================================================"
 
 # ---------- CSV ----------
 {
-    echo "size,cpu_total_s,llm_total_s,llm_matvec_s,llm_dot_s,llm_waxpby_s,off_total_s,llm_kern_ms_atmax,llm_h2d_ms_atmax,llm_d2h_ms_atmax,off_kern_ms_atmax,off_h2d_ms_atmax,off_d2h_ms_atmax"
+    echo "size,cpu_total_s,llm_total_s,llm_matvec_s,llm_dot_s,llm_waxpby_s,off_total_s,llm_kern_ms,llm_h2d_ms,llm_d2h_ms,off_kern_ms,off_h2d_ms,off_d2h_ms"
     for N in "${SIZES[@]}"; do
-        if [ "$N" = "$NMAX" ]; then
-            kn="$LLM_KERN_MS"; hn="$LLM_H2D_MS"; dn="$LLM_D2H_MS"
-            ko="$OFF_KERN_MS"; ho="$OFF_H2D_MS"; do_="$OFF_D2H_MS"
-        else
-            kn=""; hn=""; dn=""; ko=""; ho=""; do_=""
-        fi
-        echo "${N},${R_CPU_S[$N]:-},${R_LLM_S[$N]:-},${R_LLM_MV[$N]:-},${R_LLM_DOT[$N]:-},${R_LLM_WAX[$N]:-},${R_OFF_S[$N]:-},${kn},${hn},${dn},${ko},${ho},${do_}"
+        echo "${N},${R_CPU_S[$N]:-},${R_LLM_S[$N]:-},${R_LLM_MV[$N]:-},${R_LLM_DOT[$N]:-},${R_LLM_WAX[$N]:-},${R_OFF_S[$N]:-},${R_LLM_NS_KERN[$N]},${R_LLM_NS_H2D[$N]},${R_LLM_NS_D2H[$N]},${R_OFF_NS_KERN[$N]},${R_OFF_NS_H2D[$N]},${R_OFF_NS_D2H[$N]}"
     done
 } > "$CSV"
 

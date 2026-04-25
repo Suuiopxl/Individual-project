@@ -1,0 +1,71 @@
+========================================================
+  XSBench CPU vs LLM-CUDA vs Official-CUDA
+  Date: Sat Apr 25 03:08:12 BST 2026
+  CPU: 13th Gen Intel(R) Core(TM) i9-13900HK
+  GPU: NVIDIA GeForce RTX 4080 Laptop GPU
+  Problem size flag: -s small  CPU runs averaged: 3
+  Official CUDA included: yes
+========================================================
+
+--- Lookups: 100000 ---
+Config                   Runtime(s)        Lookups/s      Speedup
+---------------------- ------------ ---------------- ------------
+CPU 1-thread                  0.084          1200458         1.0x
+LLM-CUDA total                0.223           448430         0.4x
+LLM-CUDA kernel-only          0.001        100000000        83.3x
+Official CUDA total           0.009         10785044         9.0x
+
+--- Lookups: 300000 ---
+Config                   Runtime(s)        Lookups/s      Speedup
+---------------------- ------------ ---------------- ------------
+CPU 1-thread                  0.230          1306535         1.0x
+LLM-CUDA total                0.242          1239668         0.9x
+LLM-CUDA kernel-only          0.002        150000000       114.8x
+Official CUDA total           0.005         66194497        50.7x
+
+--- Lookups: 1000000 ---
+Config                   Runtime(s)        Lookups/s      Speedup
+---------------------- ------------ ---------------- ------------
+CPU 1-thread                  0.791          1265219         1.0x
+LLM-CUDA total                0.209          4784686         3.8x
+LLM-CUDA kernel-only          0.004        250000000       197.6x
+Official CUDA total           0.008        126023195        99.6x
+
+--- Lookups: 3000000 ---
+Config                   Runtime(s)        Lookups/s      Speedup
+---------------------- ------------ ---------------- ------------
+CPU 1-thread                  2.387          1257933         1.0x
+LLM-CUDA total                0.295         10169488         8.1x
+LLM-CUDA kernel-only          0.023        130434782       103.7x
+Official CUDA total           0.017        175049553       139.2x
+
+--- Lookups: 10000000 ---
+Config                   Runtime(s)        Lookups/s      Speedup
+---------------------- ------------ ---------------- ------------
+CPU 1-thread                  7.917          1263339         1.0x
+LLM-CUDA total                0.548         18248171        14.4x
+LLM-CUDA kernel-only          0.037        270270270       213.9x
+Official CUDA total           0.043        230732635       182.6x
+
+--- Lookups: 17000000 ---
+Config                   Runtime(s)        Lookups/s      Speedup
+---------------------- ------------ ---------------- ------------
+CPU 1-thread                 13.700          1240959         1.0x
+LLM-CUDA total                0.708         24011293        19.3x
+LLM-CUDA kernel-only          0.068        249999999       201.5x
+Official CUDA total           0.071        240245450       193.6x
+
+========================================================
+  Validation note (XSBench checksum)
+========================================================
+  L=100000  CPU=299541  LLM=299541  OFFICIAL=299541
+  L=300000  CPU=899521  LLM=899521  OFFICIAL=899521
+  L=1000000  CPU=999388  LLM=2999354  OFFICIAL=999388
+  L=3000000  CPU=993837  LLM=8993701  OFFICIAL=993837
+  L=10000000  CPU=968592  LLM=29968099  OFFICIAL=968592
+  L=17000000  CPU=945990  LLM=50945140  OFFICIAL=945990
+
+  Both GPU implementations sample (E,M) pairs in event order rather
+  than the CPU's history-based order; checksums therefore differ but
+  the underlying Monte Carlo computation is correct.
+========================================================
