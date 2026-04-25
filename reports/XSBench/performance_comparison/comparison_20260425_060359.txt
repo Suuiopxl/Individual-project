@@ -1,0 +1,87 @@
+========================================================
+  XSBench CPU vs LLM-CUDA vs Official-CUDA
+  Date: Sat Apr 25 06:07:08 BST 2026
+  CPU: 13th Gen Intel(R) Core(TM) i9-13900HK
+  GPU: NVIDIA GeForce RTX 4080 Laptop GPU
+  Problem size: -s small   CPU runs averaged: 3
+  Official included: yes
+  Note: 'Wall' is true wall-clock; 'Self' is binary self-reported Runtime
+        (XSBench Official excludes initialisation from Self)
+========================================================
+
+--- Lookups: 100000 ---
+Config                    Self(s)   Wall(ms)      Lookups/s Spdup(self)
+---------------------- ---------- ---------- -------------- -----------
+CPU 1-thread                0.099        315        1106527       1.0x
+LLM-CUDA total              0.247        495         404858       0.4x
+LLM-CUDA kernel-only        0.001          -      100000000      90.4x
+Official CUDA total         0.003        454       36657087      33.1x
+
+--- Lookups: 300000 ---
+Config                    Self(s)   Wall(ms)      Lookups/s Spdup(self)
+---------------------- ---------- ---------- -------------- -----------
+CPU 1-thread                0.243        479        1235114       1.0x
+LLM-CUDA total              0.225        470        1333332       1.1x
+LLM-CUDA kernel-only        0.002          -      150000000     121.4x
+Official CUDA total         0.009        658       34309235      27.8x
+
+--- Lookups: 1000000 ---
+Config                    Self(s)   Wall(ms)      Lookups/s Spdup(self)
+---------------------- ---------- ---------- -------------- -----------
+CPU 1-thread                0.823       1037        1215566       1.0x
+LLM-CUDA total              0.260        502        3846153       3.2x
+LLM-CUDA kernel-only        0.004          -      250000000     205.7x
+Official CUDA total         0.006        419      173225292     142.5x
+
+--- Lookups: 3000000 ---
+Config                    Self(s)   Wall(ms)      Lookups/s Spdup(self)
+---------------------- ---------- ---------- -------------- -----------
+CPU 1-thread                2.734       2954        1098486       1.0x
+LLM-CUDA total              0.214        467       14018692      12.8x
+LLM-CUDA kernel-only        0.012          -      250000000     227.6x
+Official CUDA total         0.014        486      211983422     193.0x
+
+--- Lookups: 10000000 ---
+Config                    Self(s)   Wall(ms)      Lookups/s Spdup(self)
+---------------------- ---------- ---------- -------------- -----------
+CPU 1-thread                8.679       8731        1154018       1.0x
+LLM-CUDA total              0.303        545       33003303      28.6x
+LLM-CUDA kernel-only        0.038          -      263157894     228.0x
+Official CUDA total         0.043        591      232731146     201.7x
+
+--- Lookups: 17000000 ---
+Config                    Self(s)   Wall(ms)      Lookups/s Spdup(self)
+---------------------- ---------- ---------- -------------- -----------
+CPU 1-thread               14.601      14441        1167243       1.0x
+LLM-CUDA total              0.357        617       47619032      40.8x
+LLM-CUDA kernel-only        0.066          -      257575757     220.7x
+Official CUDA total         0.072        504      236949790     203.0x
+
+
+========================================================
+  GPU breakdown per size (from nsys, ms)
+  Other = Wall - Kern - H2D - D2H
+========================================================
+Lookups        LLM-Kern    LLM-H2D    LLM-D2H  LLM-Other   Off-Kern    Off-H2D    Off-D2H  Off-Other
+------------ ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+100000             0.47      25.07       0.06     469.40       0.47      25.34       0.00     428.19
+300000             1.72      34.90       1.83     431.55       1.67      34.64       0.00     621.69
+1000000            4.09      23.56       5.46     468.89       4.66      31.71       0.00     382.63
+3000000           12.74      24.39      16.13     413.74      13.31      26.32       0.00     446.37
+10000000          40.18      30.61      46.79     427.42      43.14      24.99       0.00     522.87
+17000000          74.83      38.02     151.48     352.67      79.89      27.31       0.00     396.80
+
+========================================================
+  Validation note (XSBench checksum)
+========================================================
+  L=100000  CPU=299541  LLM=299541  OFFICIAL=299541
+  L=300000  CPU=899521  LLM=899521  OFFICIAL=899521
+  L=1000000  CPU=999388  LLM=2999354  OFFICIAL=999388
+  L=3000000  CPU=993837  LLM=8993701  OFFICIAL=993837
+  L=10000000  CPU=968592  LLM=29968099  OFFICIAL=968592
+  L=17000000  CPU=945990  LLM=50945140  OFFICIAL=945990
+
+  Both GPU implementations sample (E,M) pairs in event order rather
+  than the CPU's history-based order; checksums therefore differ but
+  the underlying Monte Carlo computation is correct.
+========================================================
