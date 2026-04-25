@@ -1,0 +1,37 @@
+========================================================
+  miniGhost CPU vs OpenACC GPU - end-to-end + kernel breakdown
+  Date: Sat Apr 25 01:57:34 BST 2026
+  CPU binary: /home/suuiopxl/Individual-project/apps/miniGhost_build/miniGhost_normal.x
+  GPU binary: /home/suuiopxl/Individual-project/apps/miniGhost_gpu/ref/miniGhost.x
+  GPU: NVIDIA GeForce RTX 4080 Laptop GPU
+  CPU runs per size: 3  GPU runs: 1  nsys: every size
+  Time steps: 20  Variables: 5
+========================================================
+
+Size      CPU(ms)     GPU(ms)     Speedup    Kern(ms)    H2D(ms)     D2H(ms)   
+--------  ----------  ----------  ---------  ----------  ----------  ----------
+50^3      525         3379        0.16x      77.13       0.00        0.00      
+75^3      883         3087        0.29x      263.79      0.00        0.00      
+100^3     1686        4047        0.42x      635.03      0.00        0.00      
+125^3     3049        5457        0.56x      1309.08     0.00        0.00      
+150^3     4997        7914        0.63x      2382.06     0.00        0.00      
+175^3     7797        11482       0.68x      3232.44     0.00        0.00      
+200^3     11335       15670       0.72x      5604.68     0.00        0.00      
+
+========================================================
+  Numerical validation (|SOURCE_TOTAL-GSUM|/SOURCE_TOTAL < 1e-10)
+========================================================
+Size      CPU       GPU     
+--------  --------  --------
+50^3      PASS      PASS    
+75^3      PASS      PASS    
+100^3     PASS      PASS    
+125^3     PASS      PASS    
+150^3     PASS      PASS    
+175^3     PASS      PASS    
+200^3     PASS      PASS    
+========================================================
+  CSV: comparison_20260425_015734.csv
+  Per-size nsys logs: nsys_<N>_20260425_015734.log
+  Validation logs:    validation_20260425_015734/
+========================================================
