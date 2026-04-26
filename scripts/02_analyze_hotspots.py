@@ -176,7 +176,6 @@ def load_profiling_data(report_dir: str) -> dict:
 def build_prompt(profiling_data: dict, functions: list, app_config: dict) -> str:
     language = app_config.get("language", "unknown")
     domain = app_config.get("domain", "scientific computing")
-    gpu_strategy = app_config.get("gpu_patch", {}).get("strategy", "CUDA/OpenACC")
 
     lang_display = {"fortran": "Fortran", "c": "C", "cpp": "C++"}.get(language, language)
 
@@ -184,7 +183,7 @@ def build_prompt(profiling_data: dict, functions: list, app_config: dict) -> str
 
 ## Task
 Analyze the following performance hotspot functions from a {domain} application written in {lang_display}.
-Evaluate the feasibility of accelerating them on the GPU. The intended porting target for this application is {gpu_strategy}, but you should also consider and score alternative programming models so that the final choice can be read against the alternatives.
+This application is a candidate for GPU acceleration. Recommend a porting strategy: choose the programming model that best fits each hotspot's computational pattern, and score plausible alternatives so that the recommendation can be read against the ones not chosen.
 
 ## Profiling Data Overview
 """
@@ -220,7 +219,7 @@ Evaluate the feasibility of accelerating them on the GPU. The intended porting t
 
 ### Candidate porting strategies (propose 2-3, each scored independently)
 
-For each candidate strategy, fill in the following three dimensions. The intended target for this application is `{gpu_strategy}`, which should appear as one of the candidates; the others should be plausible alternatives (for example, CUDA, OpenACC, OpenMP target offload, or a hybrid approach).
+For each candidate strategy, fill in the following three dimensions. The candidates should span plausible alternatives for this hotspot --- for example, CUDA, OpenACC, OpenMP target offload, or a hybrid approach --- and one of them should be the strategy you would pick.
 
 #### Candidate A: <short name>
 - **Programming Model**: e.g., CUDA / OpenACC / OpenMP target / Kokkos.
