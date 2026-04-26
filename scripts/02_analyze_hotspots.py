@@ -184,7 +184,7 @@ def build_prompt(profiling_data: dict, functions: list, app_config: dict) -> str
 
 ## Task
 Analyze the following performance hotspot functions from a {domain} application written in {lang_display}.
-Evaluate the feasibility of accelerating them using GPU (target strategy: {gpu_strategy}).
+Evaluate the feasibility of accelerating them on the GPU. The intended porting target for this application is {gpu_strategy}, but you should also consider and score alternative programming models so that the final choice can be read against the alternatives.
 
 ## Profiling Data Overview
 """
@@ -208,18 +208,35 @@ Evaluate the feasibility of accelerating them using GPU (target strategy: {gpu_s
         prompt += f"### {func['function_name']} ({func['file']}:{func['start_line']}-{func['end_line']})\n"
         prompt += f"```{lang_display.lower()}\n{func['source_code']}```\n\n"
 
-    prompt += f"""## Please answer the following questions for each function:
+    prompt += f"""## For each hotspot function, please answer the following:
+
+### Hotspot-level analysis (the same five dimensions for every hotspot)
 
 1. **Function Summary**: A one-sentence description.
 2. **Computational Characteristics**: Compute-bound / Memory-bound / Communication-bound?
 3. **Data Dependency Analysis**: Are there loop-carried dependencies? Is it parallelizable?
-4. **GPU Acceleration Feasibility Score**: 1-10 points.
-5. **Recommended GPU Strategy**: {gpu_strategy} / CUDA / OpenACC / Not recommended.
-6. **Expected Speedup**: A rough estimate.
-7. **Implementation Difficulty**: Low / Medium / High.
-8. **Specific Advice**: Pseudocode or key conceptual approaches for {lang_display}.
+4. **Implementation Difficulty**: Low / Medium / High.
+5. **Pseudocode / Conceptual Approach**: A kernel sketch or pseudocode in {lang_display}.
 
-Finally, provide an **optimization priority ranking**. Please format your response in Markdown.
+### Candidate porting strategies (propose 2-3, each scored independently)
+
+For each candidate strategy, fill in the following three dimensions. The intended target for this application is `{gpu_strategy}`, which should appear as one of the candidates; the others should be plausible alternatives (for example, CUDA, OpenACC, OpenMP target offload, or a hybrid approach).
+
+#### Candidate A: <short name>
+- **Programming Model**: e.g., CUDA / OpenACC / OpenMP target / Kokkos.
+- **GPU Acceleration Feasibility Score (1-10)**: how well this candidate maps to the GPU for this hotspot.
+- **Expected Speedup**: A rough estimate (e.g., 5x, 20x).
+- **One-sentence rationale**: why this score and speedup.
+
+#### Candidate B: <short name>
+(repeat the four bullets above)
+
+#### Candidate C: <short name>  *(optional, only if a third candidate is materially different)*
+(repeat the four bullets above)
+
+### After all hotspots have been analysed
+
+Provide an **optimisation priority ranking** across hotspots, identifying which one is most worth porting first. Please format your entire response in Markdown.
 """
     return prompt
 
